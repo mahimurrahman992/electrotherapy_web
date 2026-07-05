@@ -370,10 +370,10 @@ class _CustomMiscalleneousTherapyInfoState
   }
 
   Widget customMiscellaneousOthersCard() {
-    // Track which index is currently "open" (being typed into)
-    final RxInt activeInputIndex = (-1).obs;
-    final RxList<TextEditingController> tempControllers =
-        <TextEditingController>[].obs;
+    // Draft state lives on the controller (not as a local variable here) so it
+    // survives rebuilds triggered by unrelated reactive changes in this section.
+    final activeInputIndex = therapyController.activeInputIndex;
+    final tempControllers = therapyController.tempControllers;
 
     return Obx(() {
       return Padding(

@@ -4,7 +4,7 @@ import 'package:e_prescription/const/web_image.dart';
 import 'package:e_prescription/controllers/package_controller/quick_tech_package_controller.dart';
 import 'package:e_prescription/controllers/profile_controller/quick_tech_profile_controller.dart';
 import 'package:e_prescription/controllers/theme_controller/quick_tech_theme_controller.dart';
-import 'package:e_prescription/screens/add_prescription/quick_tech_add_prescription_form.dart';
+
 
 import 'package:e_prescription/utils/api.dart';
 import 'package:flutter/material.dart';

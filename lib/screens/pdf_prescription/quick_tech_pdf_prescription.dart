@@ -1,5 +1,4 @@
-import 'package:e_prescription/screens/pdf_prescription/custom_pdf_widgets.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:e_prescription/const/quick_tech_app_colors.dart';
 import 'package:e_prescription/const/quick_tech_styles.dart';
 import 'package:e_prescription/controllers/theme_controller/quick_tech_theme_controller.dart';
@@ -26,21 +25,16 @@ class _QuickTechPdfPrescriptionState extends State<QuickTechPdfPrescription> {
 
   int _currentPage = 1;
   int _totalPages = 0;
-  String? _webPdfUrl;
 
   @override
   void initState() {
     super.initState();
     debugPrint('PdfViewScreen: ${widget.pdfBytes.length} bytes');
     debugPrint('First 4 bytes: ${widget.pdfBytes.take(4).toList()}');
-    if (kIsWeb) {
-      _webPdfUrl = createBlobUrl(widget.pdfBytes);
-    }
   }
 
   @override
   void dispose() {
-    if (kIsWeb && _webPdfUrl != null) revokeBlobUrl(_webPdfUrl!);
     _pdfViewerController.dispose();
     super.dispose();
   }
@@ -81,7 +75,7 @@ class _QuickTechPdfPrescriptionState extends State<QuickTechPdfPrescription> {
                   FontWeight.bold,
                 ),
               ),
-              if (!kIsWeb && _totalPages > 0)
+              if (_totalPages > 0)
                 Text(
                   'Page $_currentPage of $_totalPages',
                   style: const TextStyle(fontSize: 12, color: Colors.white70),
@@ -151,32 +145,6 @@ class _QuickTechPdfPrescriptionState extends State<QuickTechPdfPrescription> {
   // ===== PDF VIEWER BUILDER =====
 
   Widget PdfViewer() {
-    if (kIsWeb) {
-      if (_webPdfUrl == null)
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.picture_as_pdf_outlined,
-                size: 64.sp,
-                color: Colors.grey[400],
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'No PDF data received',
-                style: TextStyle(fontSize: 16.sp, color: Colors.grey[500]),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                'Please go back and try again',
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey[400]),
-              ),
-            ],
-          ),
-        );
-      return WebPdfView(_webPdfUrl!);
-    }
     return SfPdfViewer.memory(
       widget.pdfBytes,
       controller: _pdfViewerController,

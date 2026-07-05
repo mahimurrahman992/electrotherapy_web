@@ -23,6 +23,12 @@ class QuickTechElectrotherapyController extends GetxController {
   final extraElectrotherapies = <String>[].obs;  // List of custom therapy names
   final extraTherapyControllers = <TextEditingController>[].obs;  // Controllers for each field
 
+  // Draft state for the "Extra Therapy" add form. Lives on the controller
+  // (not as a local variable in the widget builder) so it survives rebuilds
+  // triggered by unrelated reactive changes elsewhere in the Rx section.
+  final RxInt activeInputIndex = (-1).obs;
+  final RxList<TextEditingController> tempControllers = <TextEditingController>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -203,6 +209,11 @@ class QuickTechElectrotherapyController extends GetxController {
     }
     extraTherapyControllers.clear();
     extraElectrotherapies.clear();
+    for (var controller in tempControllers) {
+      controller.dispose();
+    }
+    tempControllers.clear();
+    activeInputIndex.value = -1;
     update();
   }
 

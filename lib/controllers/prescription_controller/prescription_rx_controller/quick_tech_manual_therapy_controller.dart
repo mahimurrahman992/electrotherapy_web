@@ -44,6 +44,7 @@ class QuickTechManualTherapyController extends GetxController {
     searchController.dispose();
     // ✅ NEW: Dispose custom therapy controllers
     customTherapyControllers.forEach((controller) => controller.dispose());
+    tempControllers.forEach((controller) => controller.dispose());
     super.onClose();
   }
 
@@ -83,6 +84,12 @@ class QuickTechManualTherapyController extends GetxController {
   // ✅ NEW: Support multiple custom therapies (like electrotherapy)
   final customTherapies = <String>[].obs;  // List of custom therapy names
   final customTherapyControllers = <TextEditingController>[].obs;  // Controllers for each field
+
+  // Draft state for the "Extra Therapy" add form. Lives on the controller
+  // (not as a local variable in the widget builder) so it survives rebuilds
+  // triggered by unrelated reactive changes elsewhere in the Rx section.
+  final RxInt activeInputIndex = (-1).obs;
+  final RxList<TextEditingController> tempControllers = <TextEditingController>[].obs;
 
   Future<void> fetchManualTherapies() async {
     final url = Uri.parse('${Api.getManualTherapyPrescription}');
@@ -179,6 +186,9 @@ class QuickTechManualTherapyController extends GetxController {
     customTherapyControllers.forEach((controller) => controller.dispose());
     customTherapyControllers.clear();
     customTherapies.clear();
+    tempControllers.forEach((controller) => controller.dispose());
+    tempControllers.clear();
+    activeInputIndex.value = -1;
     categories.refresh();
     selectedTherapies.refresh();
   }

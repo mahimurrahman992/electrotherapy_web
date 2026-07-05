@@ -17,6 +17,12 @@ class QuickTechSpeechLanguageTherapyController extends GetxController {
   final customTherapies = <String>[].obs;
   final customTherapyControllers = <TextEditingController>[].obs;
 
+  // Draft state for the "Extra Therapy" add form. Lives on the controller
+  // (not as a local variable in the widget builder) so it survives rebuilds
+  // triggered by unrelated reactive changes elsewhere in the Rx section.
+  final RxInt activeInputIndex = (-1).obs;
+  final RxList<TextEditingController> tempControllers = <TextEditingController>[].obs;
+
   /// Track expansion of Speech and Language Therapy panel
   var isMiscellaneousTherapyClicked = false.obs;
 
@@ -29,6 +35,7 @@ class QuickTechSpeechLanguageTherapyController extends GetxController {
   @override
   void onClose() {
     customTherapyControllers.forEach((controller) => controller.dispose());
+    tempControllers.forEach((controller) => controller.dispose());
     super.onClose();
   }
 
@@ -147,7 +154,11 @@ class QuickTechSpeechLanguageTherapyController extends GetxController {
     selectedTherapies.clear();    // ✅ NEW: Clear custom therapies
     customTherapyControllers.forEach((controller) => controller.dispose());
     customTherapyControllers.clear();
-    customTherapies.clear();    categories.refresh();
+    customTherapies.clear();
+    tempControllers.forEach((controller) => controller.dispose());
+    tempControllers.clear();
+    activeInputIndex.value = -1;
+    categories.refresh();
     selectedTherapies.refresh();
   }
 

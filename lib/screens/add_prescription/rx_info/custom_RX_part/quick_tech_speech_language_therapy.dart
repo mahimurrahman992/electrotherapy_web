@@ -367,10 +367,10 @@ class _CustomSpeechLanguageTherapyInfoState
   }
 
   Widget customSpeechOthersCard() {
-    // Track which index is currently "open" (being typed into)
-    final RxInt activeInputIndex = (-1).obs;
-    final RxList<TextEditingController> tempControllers =
-        <TextEditingController>[].obs;
+    // Draft state lives on the controller (not as a local variable here) so it
+    // survives rebuilds triggered by unrelated reactive changes in this section.
+    final activeInputIndex = speechLanguageTherapyController.activeInputIndex;
+    final tempControllers = speechLanguageTherapyController.tempControllers;
 
     return Obx(() {
       return Padding(
