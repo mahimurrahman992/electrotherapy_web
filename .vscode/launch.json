@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "e_prescription (Web, CanvasKit)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "toolArgs": [
+        "--dart-define=FLUTTER_WEB_AUTO_DETECT=false",
+        "--dart-define=FLUTTER_WEB_USE_SKWASM=false"
+      ]
+    }
+  ]
+}

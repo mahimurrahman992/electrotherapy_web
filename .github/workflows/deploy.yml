@@ -31,7 +31,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Web
-        run: flutter build web --release --base-href "/electrotherapy_web/"
+        run: flutter build web --release --base-href "/electrotherapy_web/" --dart-define=FLUTTER_WEB_AUTO_DETECT=false --dart-define=FLUTTER_WEB_USE_SKWASM=false
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
