@@ -1,4 +1,5 @@
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/on_examination_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/radiological_findings_controller.dart';
@@ -10,7 +11,6 @@ import 'package:e_prescription/controllers/prescription_controller/diagnosis_con
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/utils/api.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:e_prescription/locator.dart';
 import 'package:e_prescription/models/prescription/diagnosis_category_response.dart';
@@ -95,25 +95,13 @@ class OptimizedAdviceController extends GetxController {
   void addTest(String test) {
     if (!selectedTests.contains(test)) {
       selectedTests.add(test);
-      Get.snackbar(
-        'Test Selected',
-        '$test has been selected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('$test has been selected', title: 'Test Selected');
     }
   }
 
   void removeTest(String test) {
     selectedTests.remove(test);
-    Get.snackbar(
-      'Test Unselected',
-      '$test has been unselected',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('$test has been unselected', title: 'Test Unselected');
   }
 
   void removeTestWithSides(String test) {
@@ -121,38 +109,20 @@ class OptimizedAdviceController extends GetxController {
     selectedTests.remove('$test (Lt)');
     selectedTests.remove('$test (Rt)');
     showSideOptions[test] = false;
-    Get.snackbar(
-      'Test Unselected',
-      '$test has been unselected with sides',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('$test has been unselected with sides', title: 'Test Unselected');
   }
 
   void toggleSide(String test, String side) {
     final sideTest = '$test ($side)';
     if (selectedTests.contains(sideTest)) {
       selectedTests.remove(sideTest);
-      Get.snackbar(
-        'Side Unselected',
-        '$side side for $test has been unselected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.error('$side side for $test has been unselected', title: 'Side Unselected');
     } else {
       selectedTests.add(sideTest);
       if (!isTestSelected(test)) {
         showSideOptionsFor(test);
       }
-      Get.snackbar(
-        'Side Selected',
-        '$side side for $test has been selected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('$side side for $test has been selected', title: 'Side Selected');
     }
   }
 
@@ -212,7 +182,7 @@ class OptimizedAdviceController extends GetxController {
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch advice options');
+      QuickTechSnackbar.error('Failed to fetch advice options');
     } finally {
       isLoadingAdviceOptions.value = false;
     }

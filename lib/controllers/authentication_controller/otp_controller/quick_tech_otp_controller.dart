@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/utils/api.dart';
 import 'package:get/get.dart';
 import 'package:e_prescription/locator.dart';
@@ -27,12 +28,7 @@ class QuickTechOtpController extends GetxController {
         final data = jsonDecode(response.body);
         if (data['verifyToken'] != null) {
           verifyToken.value = data['verifyToken'].toString();
-          Get.snackbar(
-            'OTP Token',
-            'Your new verification code is: ${data['verifyToken']}',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 6),
-          );
+          QuickTechSnackbar.info('Your new verification code is: ${data['verifyToken']}', title: 'OTP Token');
         } else {
           errorText.value = data['message']?.toString() ?? 'Failed to resend OTP';
         }

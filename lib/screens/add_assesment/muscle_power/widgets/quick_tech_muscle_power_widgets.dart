@@ -60,7 +60,7 @@ class LimbSectionCard extends StatelessWidget {
                     controller: movementController,
                     height: 50,
                     backcolor: bgColor,
-                    icon: FontAwesomeIcons.arrowsRotate,
+                    icon: FontAwesomeIcons.arrowsRotate.data,
                     lebelcolor: labelColor,
                     iconcolor: iconColor,
                     txtcolor: txtColor,
@@ -161,7 +161,7 @@ class LimbSectionCard extends StatelessWidget {
               controller: commentController,
               height: 80,
               backcolor: bgColor,
-              icon: FontAwesomeIcons.comment,
+              icon: FontAwesomeIcons.comment.data,
               lebelcolor: labelColor,
               iconcolor: iconColor,
               txtcolor: txtColor,
@@ -212,7 +212,7 @@ class OxfordMuscleScaleWidget extends StatelessWidget {
               IconButton(
                 onPressed: () => musclePowerController.toggleOxfordMuscle(),
                 icon: Icon(
-                  FontAwesomeIcons.circleInfo,
+                  FontAwesomeIcons.circleInfo.data,
                   size: 20,
                   color: musclePowerController.oxfordMuscleVisible.value ? mainColor : txtColor.withValues(alpha:0.7),
                 ),

@@ -65,7 +65,7 @@ class OnExaminationDropDown extends StatelessWidget {
               IconButton(
                 onPressed: () => isExpanded.toggle(),
                 icon: Icon(
-                  FontAwesomeIcons.circleInfo,
+                  FontAwesomeIcons.circleInfo.data,
                   size: 20,
                   color: isExpanded.value ? (isDay ? QuickTechAppColors.lightmaincolor : QuickTechAppColors.darkmaincolor) : iconColor,
                 ),

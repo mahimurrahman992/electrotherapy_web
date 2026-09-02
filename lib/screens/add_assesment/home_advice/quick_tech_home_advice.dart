@@ -32,7 +32,7 @@ class HomeAdvice extends StatelessWidget {
       final Widget adviceField = QuickTechCustomTextField(
         height: 120, // Increased slightly to accommodate 4 lines of text comfortably
         maxline: 4,
-        icon: FontAwesomeIcons.houseMedical,
+        icon: FontAwesomeIcons.houseMedical.data,
         iconcolor: iconLabelColor,
         lebelcolor: iconLabelColor,
         txtcolor: txtColor,
@@ -55,7 +55,7 @@ class HomeAdvice extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Home Advice',
-                  icon: FontAwesomeIcons.houseUser,
+                  icon: FontAwesomeIcons.houseUser.data,
                 ),
                 const SizedBox(height: 16),
                 adviceField,
@@ -73,13 +73,13 @@ class HomeAdvice extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Home Advice',
-                  icon: FontAwesomeIcons.houseUser,
+                  icon: FontAwesomeIcons.houseUser.data,
                 ),
                 const SizedBox(height: 20),
                 assessmentCard(
                   color: mainColor,
                   title: 'Instructions for Patient',
-                  icon: FontAwesomeIcons.filePrescription,
+                  icon: FontAwesomeIcons.filePrescription.data,
                   child: adviceField,
                 ),
               ],
@@ -96,13 +96,13 @@ class HomeAdvice extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Home Advice',
-                  icon: FontAwesomeIcons.houseUser,
+                  icon: FontAwesomeIcons.houseUser.data,
                 ),
                 const SizedBox(height: 24),
                 assessmentCard(
                   color: mainColor,
                   title: 'Instructions for Patient',
-                  icon: FontAwesomeIcons.filePrescription,
+                  icon: FontAwesomeIcons.filePrescription.data,
                   child: adviceField,
                 ),
               ],

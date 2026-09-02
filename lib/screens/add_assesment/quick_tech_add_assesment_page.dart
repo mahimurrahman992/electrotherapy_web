@@ -1,5 +1,6 @@
 import 'package:e_prescription/const/quick_tech_app_colors.dart';
 import 'package:e_prescription/const/quick_tech_styles.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/assessment_controller/assestive_device/quick_tech_assestive_device_controller.dart';
 import 'package:e_prescription/controllers/assessment_controller/birth_history/quick_tech_birth_history_controller.dart';
 import 'package:e_prescription/controllers/assessment_controller/differential_diagnosis/quick_tech_differential_diagnosis_controller.dart';
@@ -30,7 +31,6 @@ import 'package:e_prescription/screens/add_assesment/patient_info/quick_tech_pat
 import 'package:e_prescription/screens/add_assesment/problem_summary_goal/quick_tech_problem_summary.dart';
 import 'package:e_prescription/screens/add_assesment/range_of_motion/quick_tech_range_of_motion.dart';
 import 'package:e_prescription/screens/add_assesment/referred_to/quick_tech_referred_to.dart';
-import 'package:e_prescription/screens/add_prescription/quick_tech_add_prescription_form.dart';
 import 'package:e_prescription/widgets/quick_tech_custom_button.dart';
 import 'package:e_prescription/widgets/quick_tech_custom_drawer.dart';
 import 'package:e_prescription/services/quick_tech_patient_draft_storage_service.dart';
@@ -172,13 +172,7 @@ class _QuickTechAddAssesmentPageState extends State<QuickTechAddAssesmentPage>
 
     final now = DateTime.now();
     if (now.difference(_lastSaveTime).inMilliseconds < _saveDebounceMs) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please wait before saving again'),
-          backgroundColor: Colors.orange,
-          duration: Duration(milliseconds: 1500),
-        ),
-      );
+      QuickTechSnackbar.warning('Please wait before saving again');
       return;
     }
     _lastSaveTime = now;
@@ -272,6 +266,8 @@ class _QuickTechAddAssesmentPageState extends State<QuickTechAddAssesmentPage>
         await QuickTechPatientDraftStorageService.saveDraft(
           name: patientInfoController.patientNameController.text,
           phone: patientInfoController.phoneController.text,
+          age: patientInfoController.ageController.text,
+          gender: patientInfoController.sex.value ?? '',
         );
       }
     } catch (e, stack) {
@@ -294,12 +290,7 @@ class _QuickTechAddAssesmentPageState extends State<QuickTechAddAssesmentPage>
 
   bool _validatePatientId() {
     if (patientInfoController.currentPatientId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please save patient info first.'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      QuickTechSnackbar.error('Please save patient info first.');
       _tabController.animateTo(0);
       return false;
     }
@@ -630,27 +621,30 @@ class _QuickTechAddAssesmentPageState extends State<QuickTechAddAssesmentPage>
                   ? Border.all(color: Colors.white.withValues(alpha:0.4))
                   : null,
         ),
-        child: ListTile(
-          dense: true,
-          leading: Icon(
-            isDone ? Icons.check_circle_rounded : _tabIcons[i],
-            color:
-                isDone
-                    ? Colors.greenAccent
-                    : Colors.white.withValues(alpha:isSelected ? 1 : 0.7),
-            size: 20,
-          ),
-          title: Text(
-            _tabNames[i],
-            style: TextStyle(
-              color: Colors.white.withValues(alpha:isSelected ? 1 : 0.75),
-              fontSize: 12,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        child: Material(
+          type: MaterialType.transparency,
+          child: ListTile(
+            dense: true,
+            leading: Icon(
+              isDone ? Icons.check_circle_rounded : _tabIcons[i],
+              color:
+                  isDone
+                      ? Colors.greenAccent
+                      : Colors.white.withValues(alpha:isSelected ? 1 : 0.7),
+              size: 20,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+            title: Text(
+              _tabNames[i],
+              style: TextStyle(
+                color: Colors.white.withValues(alpha:isSelected ? 1 : 0.75),
+                fontSize: 12,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            onTap: () => _tabController.animateTo(i),
           ),
-          onTap: () => _tabController.animateTo(i),
         ),
       );
     });

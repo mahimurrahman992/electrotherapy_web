@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/screens/authentications/login/forgot_password/otp_verification/forgot_pass_otp.dart';
 import 'package:e_prescription/utils/api.dart';
 import 'package:get/get.dart';
@@ -67,15 +68,15 @@ class QuickTechForgotPassController extends GetxController {
         _clearAllData();
         passwordController.clear();
         confirmController.clear();
-        Get.snackbar('Success', data['message'], backgroundColor: Colors.green.shade100, colorText: Colors.black);
+        QuickTechSnackbar.success(data['message']);
         Get.offAllNamed('/login');
       } else {
         resetErrorText.value = data['message'] ?? 'Failed to reset password.';
-        Get.snackbar('Error', resetErrorText.value, backgroundColor: Colors.red.shade100, colorText: Colors.black);
+        QuickTechSnackbar.error(resetErrorText.value);
       }
     } catch (e) {
       resetErrorText.value = 'Failed to reset password. Please try again.';
-      Get.snackbar('Error', resetErrorText.value, backgroundColor: Colors.red.shade100, colorText: Colors.black);
+      QuickTechSnackbar.error(resetErrorText.value);
     } finally {
       isLoading.value = false;
     }
@@ -103,13 +104,7 @@ class QuickTechForgotPassController extends GetxController {
         otpSent.value = true;
         successMessage.value = 'OTP sent to ${phoneNumber.value}';
         
-        Get.snackbar(
-          'Success',
-          '${data['message']}\nToken: ${data['passresetToken']}\nMobile: ${data['mobile']}',
-          backgroundColor: Colors.green.shade100,
-          colorText: Colors.black,
-          duration: const Duration(seconds: 4),
-        );
+        QuickTechSnackbar.success('${data['message']}\nToken: ${data['passresetToken']}\nMobile: ${data['mobile']}');
         
         Get.to(() => ForgotPassOtp(), arguments: {
           'passresetToken': data['passresetToken'],
@@ -117,11 +112,11 @@ class QuickTechForgotPassController extends GetxController {
         });
       } else {
         errorMessage.value = data['message'] ?? 'Failed to send OTP.';
-        Get.snackbar('Error', errorMessage.value, backgroundColor: Colors.red.shade100, colorText: Colors.black);
+        QuickTechSnackbar.error(errorMessage.value);
       }
     } catch (e) {
       errorMessage.value = 'Failed to send OTP. Please try again.';
-      Get.snackbar('Error', errorMessage.value, backgroundColor: Colors.red.shade100, colorText: Colors.black);
+      QuickTechSnackbar.error(errorMessage.value);
     } finally {
       isLoading.value = false;
     }

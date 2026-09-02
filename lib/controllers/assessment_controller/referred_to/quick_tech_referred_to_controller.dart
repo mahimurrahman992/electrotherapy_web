@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 import 'package:e_prescription/controllers/assessment_controller/patient_info/quick_tech_patient_info_controlle.dart';
 import 'package:e_prescription/controllers/assessment_controller/quick_tech_assessment_controller.dart';
@@ -46,7 +47,7 @@ class QuickTechReferredToController extends GetxController {
   // API call to store referred to data using new endpoint and keys
   Future<int> storeReferredTo(int patientIdValue) async {
     if (patientIdValue == 0) {
-      Get.snackbar('Error', 'Patient ID not set', backgroundColor: Colors.red);
+      QuickTechSnackbar.error('Patient ID not set');
       return 0;
     }
 
@@ -183,13 +184,7 @@ class QuickTechReferredToController extends GetxController {
     if (!selectedReferredTo.contains(referredTo)) {
       selectedReferredTo.add(referredTo);
       update();
-      Get.snackbar(
-        'Selected: $referredTo',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $referredTo');
     }
   }
 

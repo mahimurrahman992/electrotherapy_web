@@ -207,8 +207,8 @@ class _PatientProfileCard extends StatelessWidget {
                   ),
                   child: Icon(
                     isMale
-                        ? FontAwesomeIcons.person
-                        : FontAwesomeIcons.personDress,
+                        ? FontAwesomeIcons.person.data
+                        : FontAwesomeIcons.personDress.data,
                     color: Colors.white,
                     size: isDesktop ? 36.sp : 30.sp,
                   ),

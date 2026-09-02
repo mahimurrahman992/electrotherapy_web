@@ -2,6 +2,7 @@ import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_se
 import 'package:e_prescription/screens/authentications/login/quick_tech_login_verification.dart';
 import 'package:e_prescription/services/template_services/quick_tech_template_storage_service.dart';
 import 'package:e_prescription/utils/api.dart';
+import 'package:e_prescription/utils/ui_helpers.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ class QuickTechLoginController extends GetxController {
     if (_googleSignIn == null) {
       if (kIsWeb) {
         _googleSignIn = GoogleSignIn(
-          clientId: '637978940538-8ra2n5459golm1q22fo576om3pe3trfn.apps.googleusercontent.com',
+          clientId:
+              '637978940538-8ra2n5459golm1q22fo576om3pe3trfn.apps.googleusercontent.com',
           scopes: ['email', 'profile'],
         );
       } else {
@@ -34,10 +36,9 @@ class QuickTechLoginController extends GetxController {
   Future<void> loginWithCredentials(String mobile, String password) async {
     if (validatePhoneNumber(mobile) != null ||
         validatePassword(password) != null) {
-      Get.snackbar(
-        'Error',
-        'Please fill all fields correctly',
-        snackPosition: SnackPosition.BOTTOM,
+      UIHelper.showNotification(
+        title: 'Error',
+        message: 'Please fill all fields correctly',
       );
       return;
     }
@@ -56,24 +57,22 @@ class QuickTechLoginController extends GetxController {
         await QuickTechAuthStorageService.saveUser(user);
         Get.offAllNamed('/mainhome');
       } else if (data['verifyToken'] != null && data['mobile'] != null) {
-        Get.snackbar(
-          'Verification Required',
-          'Please verify your account. A verification code has been sent to your mobile.',
-          snackPosition: SnackPosition.BOTTOM,
+        UIHelper.showNotification(
+          title: 'Verification Required',
+          message:
+              'Please verify your account. A verification code has been sent to your mobile.',
         );
         Get.to(() => QuickTechLoginVerification(staticMobile: data['mobile']));
       } else {
-        Get.snackbar(
-          'Login Failed',
-          data['message'] ?? 'You Have to Sign Up First',
-          snackPosition: SnackPosition.BOTTOM,
+        UIHelper.showNotification(
+          title: 'Login Failed',
+          message: data['message'] ?? 'You Have to Sign Up First',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Login failed: \\${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
+      UIHelper.showNotification(
+        title: 'Error',
+        message: 'Login failed: \\${e.toString()}',
       );
     } finally {
       isLoading(false);
@@ -86,16 +85,15 @@ class QuickTechLoginController extends GetxController {
       isLoading(true);
       // Sign out first to always show account picker (reuse initialized instance)
       await googleSignInInstance.signOut();
-      final GoogleSignInAccount? googleUser = await googleSignInInstance.signIn();
+      final GoogleSignInAccount? googleUser =
+          await googleSignInInstance.signIn();
       if (googleUser == null) {
         isLoading(false);
         return; // User cancelled
       }
       final email = googleUser.email;
       final response = await http.post(
-        Uri.parse(
-          '${Api.baseUrl}/api/check/email/and/login',
-        ),
+        Uri.parse('${Api.baseUrl}/api/check/email/and/login'),
         headers: {'Accept': 'application/json'},
         body: {'email': email},
       );
@@ -110,17 +108,15 @@ class QuickTechLoginController extends GetxController {
           data['message'] == 'This email has no user registered') {
         showRegistrationBottomSheet(email);
       } else {
-        Get.snackbar(
-          'Login Failed',
-          data['message'] ?? 'Unknown error',
-          snackPosition: SnackPosition.BOTTOM,
+        UIHelper.showNotification(
+          title: 'Login Failed',
+          message: data['message'] ?? 'Unknown error',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Google Sign-In failed: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
+      UIHelper.showNotification(
+        title: 'Error',
+        message: 'Google Sign-In failed: ${e.toString()}',
       );
     } finally {
       isLoading(false);
@@ -172,27 +168,24 @@ class QuickTechLoginController extends GetxController {
                   final pass = passController.text.trim();
                   final confirmPass = confirmPassController.text.trim();
                   if (phone.isEmpty || pass.isEmpty || confirmPass.isEmpty) {
-                    Get.snackbar(
-                      'Error',
-                      'All fields are required',
-                      snackPosition: SnackPosition.BOTTOM,
+                    UIHelper.showNotification(
+                      title: 'Error',
+                      message: 'All fields are required',
                     );
                     return;
                   }
                   if (pass != confirmPass) {
-                    Get.snackbar(
-                      'Error',
-                      'Passwords do not match',
-                      snackPosition: SnackPosition.BOTTOM,
+                    UIHelper.showNotification(
+                      title: 'Error',
+                      message: 'Passwords do not match',
                     );
                     return;
                   }
                   if (validatePhoneNumber(phone) != null ||
                       validatePassword(pass) != null) {
-                    Get.snackbar(
-                      'Error',
-                      'Please fill all fields correctly',
-                      snackPosition: SnackPosition.BOTTOM,
+                    UIHelper.showNotification(
+                      title: 'Error',
+                      message: 'Please fill all fields correctly',
                     );
                     return;
                   }
@@ -214,9 +207,7 @@ class QuickTechLoginController extends GetxController {
                         registerData['mobile'] != null) {
                       // Auto verify using the verify API
                       final verifyResponse = await http.post(
-                        Uri.parse(
-                          '${Api.baseUrl}/api/verify',
-                        ),
+                        Uri.parse('${Api.baseUrl}/api/verify'),
                         headers: {'Accept': 'application/json'},
                         body: {
                           'mobile': registerData['mobile'].toString(),
@@ -252,38 +243,36 @@ class QuickTechLoginController extends GetxController {
                           Get.back();
                           Get.offAllNamed('/mainhome');
                         } else {
-                          Get.snackbar(
-                            'Login Failed',
-                            loginData['message'] ??
+                          UIHelper.showNotification(
+                            title: 'Login Failed',
+                            message:
+                                loginData['message'] ??
                                 'Login after verification failed',
-                            snackPosition: SnackPosition.BOTTOM,
                           );
                         }
                       } else {
-                        Get.snackbar(
-                          'Verification Failed',
-                          verifyData['message'] ?? 'Auto verification failed',
-                          snackPosition: SnackPosition.BOTTOM,
+                        UIHelper.showNotification(
+                          title: 'Verification Failed',
+                          message:
+                              verifyData['message'] ??
+                              'Auto verification failed',
                         );
                       }
                     } else if (registerData['status'] == 'success') {
-                      Get.snackbar(
-                        'Registration Success',
-                        'Please check your SMS for verification code.',
-                        snackPosition: SnackPosition.BOTTOM,
+                      UIHelper.showNotification(
+                        title: 'Registration Success',
+                        message: 'Please check your SMS for verification code.',
                       );
                     } else {
-                      Get.snackbar(
-                        'Registration Failed',
-                        registerData['message'] ?? 'Unknown error',
-                        snackPosition: SnackPosition.BOTTOM,
+                      UIHelper.showNotification(
+                        title: 'Registration Failed',
+                        message: registerData['message'] ?? 'Unknown error',
                       );
                     }
                   } catch (e) {
-                    Get.snackbar(
-                      'Error',
-                      'Registration failed: ${e.toString()}',
-                      snackPosition: SnackPosition.BOTTOM,
+                    UIHelper.showNotification(
+                      title: 'Error',
+                      message: 'Registration failed: ${e.toString()}',
                     );
                   } finally {
                     isLoading(false);
@@ -324,7 +313,7 @@ class QuickTechLoginController extends GetxController {
     QuickTechTemplateStorageService.clearSelectedTemplateId();
     // Remove ALL controllers properly
     //Get.deleteAll(force: true);
-await QuickTechAuthStorageService.clear();
+    await QuickTechAuthStorageService.clear();
     // Navigate fresh
     Get.offAllNamed('/login');
 
@@ -369,10 +358,9 @@ await QuickTechAuthStorageService.clear();
     final phone = phonenumberController.text.trim();
     final pass = passwordController.text.trim();
     if (validatePhoneNumber(phone) != null || validatePassword(pass) != null) {
-      Get.snackbar(
-        'Error',
-        'Please fill all fields correctly',
-        snackPosition: SnackPosition.BOTTOM,
+      UIHelper.showNotification(
+        title: 'Error',
+        message: 'Please fill all fields correctly',
       );
       return;
     }
@@ -393,25 +381,22 @@ await QuickTechAuthStorageService.clear();
         // Controllers are managed by locator/setUp and route bindings; avoid ad-hoc instantiation here
         Get.offAllNamed('/mainhome');
       } else if (data['verifyToken'] != null && data['mobile'] != null) {
-        Get.snackbar(
-          'Verification Required',
-          'Please verify your account. A verification code has been sent to your mobile.\nVerification Code: ${data['verifyToken']}',
-          snackPosition: SnackPosition.BOTTOM,
+        UIHelper.showNotification(
+          title: 'Verification Required',
+          message:
+              'Please verify your account. A verification code has been sent to your mobile.\nVerification Code: ${data['verifyToken']}',
         );
         Get.to(() => QuickTechLoginVerification(staticMobile: data['mobile']));
       } else {
-        Get.snackbar(
-          'Login Failed',
-          // 'You Have to Sign Up First',
-          data['message'] ?? 'You Have to Sign Up First',
-          snackPosition: SnackPosition.BOTTOM,
+        UIHelper.showNotification(
+          title: 'Login Failed',
+          message: data['message'] ?? 'You Have to Sign Up First',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Login failed: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
+      UIHelper.showNotification(
+        title: 'Error',
+        message: 'Login failed: ${e.toString()}',
       );
     } finally {
       isLoading(false);

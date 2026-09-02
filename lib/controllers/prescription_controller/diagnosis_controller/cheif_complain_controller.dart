@@ -1,5 +1,6 @@
 
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/drug_history_controller.dart';
@@ -177,14 +178,7 @@ class CheifComplainController extends GetxController {
         customNewComplaints.refresh();
       }
       update();
-      Get.snackbar(
-        'Selected: $complaint',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $complaint');
     }
   }
 
@@ -206,13 +200,7 @@ class CheifComplainController extends GetxController {
       selectedSubComplaints[chiefComplaint]!.add(subComplaint);
       selectedSubComplaints.refresh(); // Ensure UI updates
       update();
-      Get.snackbar(
-        'Selected: $subComplaint',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $subComplaint');
     }
   }
 

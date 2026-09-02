@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/assessment_controller/patient_info/quick_tech_patient_info_controlle.dart';
 import 'package:e_prescription/controllers/assessment_controller/quick_tech_assessment_controller.dart';
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
@@ -162,13 +163,7 @@ class QuickTechDifferentialDiagnosisController extends GetxController {
     if (!selectedDiagnosis.contains(diagnosis)) {
       selectedDiagnosis.add(diagnosis);
       update();
-           Get.snackbar(
-      'Selected: $diagnosis', 
-      '',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+           QuickTechSnackbar.success('Selected: $diagnosis');
     }
   }
   void removeDiagnosis(String diagnosis) {
@@ -183,13 +178,7 @@ class QuickTechDifferentialDiagnosisController extends GetxController {
     if (!selectedsubDiagnosis[diagnosis]!.contains(addsubDiagnosis)) {
       selectedsubDiagnosis[diagnosis]!.add(addsubDiagnosis);
       update();
-           Get.snackbar(
-      'Selected: $addsubDiagnosis', 
-      '',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+           QuickTechSnackbar.success('Selected: $addsubDiagnosis');
     }
   }
    void removeSubDiagnosis(String diagnosis, String addsubDiagnosis) {

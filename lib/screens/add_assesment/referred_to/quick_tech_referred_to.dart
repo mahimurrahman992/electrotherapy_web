@@ -73,7 +73,7 @@ class ReferredTo extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Referred To',
-                  icon: FontAwesomeIcons.userDoctor,
+                  icon: FontAwesomeIcons.userDoctor.data,
                 ),
                 const SizedBox(height: 16),
                 selectionSection,
@@ -90,7 +90,7 @@ class ReferredTo extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Referred To',
-                  icon: FontAwesomeIcons.userDoctor,
+                  icon: FontAwesomeIcons.userDoctor.data,
                 ),
                 const SizedBox(height: 20),
                 assessmentCard(
@@ -112,7 +112,7 @@ class ReferredTo extends StatelessWidget {
                 assessmentHeader(
                   mainColor: mainColor,
                   title: 'Referred To',
-                  icon: FontAwesomeIcons.userDoctor,
+                  icon: FontAwesomeIcons.userDoctor.data,
                 ),
                 const SizedBox(height: 24),
                 // Since this component is smaller, we can constrain its width on desktop

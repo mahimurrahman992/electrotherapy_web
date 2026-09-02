@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
@@ -136,26 +137,14 @@ requestData['left_right'] = leftRights;
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print('✅ Bulk Disability Types stored successfully: $responseData');
-      Get.snackbar(
-        'Success',
-        'Disability Types stored successfully!',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Disability Types stored successfully!');
     } else {
       throw Exception('Failed to store Disability Types: ${responseData['message'] ?? 'Unknown error'}');
     }
 
   } catch (e) {
     print('❌ Failed to store Disability Types: $e');
-    Get.snackbar(
-      'Error',
-      'Failed to store Disability Types: $e',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('Failed to store Disability Types: $e');
   } finally {
     isLoading.value = false;
   }
@@ -302,13 +291,7 @@ requestData['left_right'] = leftRights;
       selecteddisabilityTypes.refresh();
       selectedSubDisabilityTypes.refresh(); 
       update();
-      Get.snackbar(
-        'Selected: $disability',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $disability');
     }
   }
 

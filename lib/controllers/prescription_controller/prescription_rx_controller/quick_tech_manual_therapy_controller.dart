@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
 import 'package:e_prescription/locator.dart';
 import 'package:e_prescription/models/rx_models/therapy_model.dart';
@@ -103,7 +104,7 @@ class QuickTechManualTherapyController extends GetxController {
         );
       }
     } catch (e) {
-      Get.snackbar("Error", "Failed to load manual therapies: $e");
+      QuickTechSnackbar.error("Failed to load manual therapies: $e");
     }
   }
 

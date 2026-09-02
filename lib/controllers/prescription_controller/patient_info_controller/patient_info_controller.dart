@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import 'package:e_prescription/services/quick_tech_patient_draft_storage_service.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 class Patient {
   final int userId;
   final int? id; 
@@ -114,12 +116,9 @@ Future<int> updatePatientInfo(int userId) async {
 
   if (isInCooldown) {
     final secs = cooldownSecondsRemaining;
-    Get.snackbar(
-      'Too Many Attempts',
+    QuickTechSnackbar.warning(
       secs > 0 ? 'Please wait ${secs}s and try again.' : 'Please wait and try again.',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.orange,
-      colorText: Colors.white,
+      title: 'Too Many Attempts',
     );
     return 429;
   }
@@ -129,26 +128,16 @@ Future<int> updatePatientInfo(int userId) async {
   try {
     final token = QuickTechAuthStorageService.getFreshToken();
     if (token == null || token.isEmpty) {
-      Get.snackbar(
-        "Authentication Error",
-        "User is not authenticated. Please log in again.",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.error(
+          "User is not authenticated. Please log in again.",
+          title: "Authentication Error");
       return 401;
     }
 
     if (patientName.value.isEmpty ||
        
         phone.value.isEmpty) {
-      Get.snackbar(
-        "Error",
-        "Please fill all fields",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.error("Please fill all fields");
       return 400;
     }
 
@@ -166,15 +155,17 @@ Future<int> updatePatientInfo(int userId) async {
       prescriptionDate: formattedDate,
     );
 
-    final response = await http.post(
-      Uri.parse(Api.updatePrescriptionPatientInfo),
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "Bearer $token",
-      },
-      body: jsonEncode(patient.toJson()),
-    );
+    final response = await http
+        .post(
+          Uri.parse(Api.updatePrescriptionPatientInfo),
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Authorization": "Bearer $token",
+          },
+          body: jsonEncode(patient.toJson()),
+        )
+        .timeout(const Duration(seconds: 30));
 
     if (response.statusCode == 429) {
       final retryAfterHeader = response.headers['retry-after'];
@@ -183,22 +174,15 @@ Future<int> updatePatientInfo(int userId) async {
           ? retryAfterSeconds
           : 10;
       _cooldownUntil = DateTime.now().add(Duration(seconds: seconds));
-      Get.snackbar(
-        'Too Many Attempts',
-        'Please wait ${seconds}s and try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.warning('Please wait ${seconds}s and try again.',
+          title: 'Too Many Attempts');
       return 429;
     }
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      Get.snackbar("Success", data['message'],
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white);
+      QuickTechSnackbar.success(data['message']?.toString() ?? 'Saved',
+          title: "Success");
 
       var returnedPatient = data['patient'];
       patientId.value = returnedPatient['id'] ?? 0;
@@ -224,24 +208,23 @@ Future<int> updatePatientInfo(int userId) async {
       await QuickTechAuthStorageService.handleUnauthorized();
       return response.statusCode;
     } else {
-      Get.snackbar(
-        "Error",
-        "Failed to update patient",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.error("Failed to update patient");
       return response.statusCode;
     }
+  } on TimeoutException {
+    QuickTechSnackbar.warning(
+        "Server took too long to respond. Please try again.",
+        title: "Timeout");
+    return 408;
+  } on http.ClientException catch (e) {
+    print("Network/ClientException: $e");
+    QuickTechSnackbar.error(
+        "Could not reach the server (network/CORS). Please try again.",
+        title: "Network Error");
+    return 503;
   } catch (e) {
     print("Exception: $e");
-    Get.snackbar(
-      "Error",
-      "Something went wrong",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error("Something went wrong");
     return 500;
   } finally {
     isSaving.value = false;
@@ -267,11 +250,23 @@ void clearAllData() {
     if (draft == null) return;
 
     // Only prefill if user hasn't typed yet.
+    // Set both the Rx value and the TextEditingController text directly,
+    // because the `ever` workers that sync them can miss this post-frame update.
     if (patientName.value.trim().isEmpty) {
       patientName.value = draft.name;
+      patientNameController.text = draft.name;
     }
     if (phone.value.trim().isEmpty) {
       phone.value = draft.phone;
+      phoneController.text = draft.phone;
+    }
+    if (age.value.trim().isEmpty && draft.age.trim().isNotEmpty) {
+      age.value = draft.age;
+      ageController.text = draft.age;
+    }
+    if (gender.value.trim().isEmpty && draft.gender.trim().isNotEmpty) {
+      gender.value = draft.gender;
+      genderController.text = draft.gender;
     }
 
     if (clearAfterLoad) {

@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/const/electro_param_keys.dart';
-import 'package:e_prescription/const/quick_tech_app_colors.dart';
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
 import 'package:e_prescription/locator.dart';
 import 'package:e_prescription/controllers/prescription_controller/prescription_rx_controller/quick_tech_electrotherapy_controller.dart';
@@ -370,24 +370,10 @@ class QuicktechmainPrescriptionControllr extends GetxController {
           ? "${storedTherapies.first} stored successfully"
           : "${storedTherapies.join(', ')} stored successfully";
 
-      Get.snackbar(
-        "Prescription Stored",
-        successMessage,
-        duration: const Duration(seconds: 2),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: QuickTechAppColors.white,
-      );
+      QuickTechSnackbar.success(successMessage, title: "Prescription Stored");
       return 200;
     } else if (errorMessages.isNotEmpty) {
-      Get.snackbar(
-        "Error",
-        errorMessages.first,
-        duration: const Duration(seconds: 3),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: QuickTechAppColors.white,
-      );
+      QuickTechSnackbar.error(errorMessages.first);
       return 400;
     }
     return 500;

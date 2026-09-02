@@ -265,7 +265,9 @@ class ChiefComplaintsDropdown extends StatelessWidget {
                           : QuickTechAppColors.darkmaincolor,
                 ),
               ),
-              child: Column(
+              child: Material(
+                type: MaterialType.transparency,
+                child: Column(
                 children: [
                   // Search field
                   TextField(
@@ -484,6 +486,7 @@ class ChiefComplaintsDropdown extends StatelessWidget {
                     );
                   }),
                 ],
+              ),
               ),
             ),
         ],

@@ -1,5 +1,6 @@
 ﻿import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/drug_history_controller.dart';
@@ -94,7 +95,7 @@ var additionalTherapyOptions = <Map<String, dynamic>>[].obs;
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch therapy options');
+      QuickTechSnackbar.error('Failed to fetch therapy options');
     } finally {
       isLoadingTherapyOptions.value = false;
     }
@@ -153,10 +154,7 @@ void toggleElectrotherapyOption(Map<String, dynamic> option) {
     frequencyControllers[therapyId]?.dispose();
     durationControllers.remove(therapyId);
     frequencyControllers.remove(therapyId);
-    Get.snackbar('Electrotherapy Option', '${option['name']} unselected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white);
+    QuickTechSnackbar.error('${option['name']} unselected', title: 'Electrotherapy Option');
   } else {
     selectedElectrotherapy.add(option);
     therapyDetails[therapyId] = {
@@ -167,10 +165,7 @@ void toggleElectrotherapyOption(Map<String, dynamic> option) {
     // Create separate controllers for this therapy
     durationControllers[therapyId] = TextEditingController();
     frequencyControllers[therapyId] = TextEditingController();
-    Get.snackbar('Electrotherapy Option', '${option['name']} selected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white);
+    QuickTechSnackbar.success('${option['name']} selected', title: 'Electrotherapy Option');
   }
 }
 void toggleManualTherapyOption(Map<String, dynamic> option) {
@@ -183,10 +178,7 @@ void toggleManualTherapyOption(Map<String, dynamic> option) {
     frequencyControllers[therapyId]?.dispose();
     durationControllers.remove(therapyId);
     frequencyControllers.remove(therapyId);
-    Get.snackbar('Manual Therapy Option', '${option['name']} unselected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white);
+    QuickTechSnackbar.error('${option['name']} unselected', title: 'Manual Therapy Option');
   } else {
     selectedManualTherapy.add(option);
     therapyDetails[therapyId] = {
@@ -197,10 +189,7 @@ void toggleManualTherapyOption(Map<String, dynamic> option) {
     // Create separate controllers for this therapy
     durationControllers[therapyId] = TextEditingController();
     frequencyControllers[therapyId] = TextEditingController();
-    Get.snackbar('Manual Therapy Option', '${option['name']} selected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white);
+    QuickTechSnackbar.success('${option['name']} selected', title: 'Manual Therapy Option');
   }
 }
 
@@ -216,10 +205,7 @@ void toggleAdditionalTherapyOption(Map<String, dynamic> option) {
     frequencyControllers[therapyId]?.dispose();
     durationControllers.remove(therapyId);
     frequencyControllers.remove(therapyId);
-    Get.snackbar('Additional Therapy Option', '${option['name']} unselected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
-        colorText: Colors.white);
+    QuickTechSnackbar.error('${option['name']} unselected', title: 'Additional Therapy Option');
   } else {
     selectedAdditionalTherapies.add(option);
     therapyDetails[therapyId] = {
@@ -230,10 +216,7 @@ void toggleAdditionalTherapyOption(Map<String, dynamic> option) {
     // Create separate controllers for this therapy
     durationControllers[therapyId] = TextEditingController();
     frequencyControllers[therapyId] = TextEditingController();
-    Get.snackbar('Additional Therapy Option', '${option['name']} selected',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white);
+    QuickTechSnackbar.success('${option['name']} selected', title: 'Additional Therapy Option');
   }
 }
  

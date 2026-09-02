@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
@@ -134,26 +135,14 @@ requestData['left_right'] = leftRights;
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print('✅ Bulk Assestive Device stored successfully: $responseData');
-      Get.snackbar(
-        'Success',
-        'Assestive Device stored successfully!',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Assestive Device stored successfully!');
     } else {
       throw Exception('Failed to store Assestive Device: ${responseData['message'] ?? 'Unknown error'}');
     }
 
   } catch (e) {
     print('❌ Failed to store Assestive Device: $e');
-    Get.snackbar(
-      'Error',
-      'Failed to store Assestive Device: $e',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('Failed to store Assestive Device: $e');
   } finally {
     isLoading.value = false;
   }
@@ -297,13 +286,7 @@ requestData['left_right'] = leftRights;
       }
       selectedAssestiveDevice.refresh();
       update();
-      Get.snackbar(
-        'Selected: $device',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $device');
     }
   }
 
@@ -326,13 +309,7 @@ requestData['left_right'] = leftRights;
       selectedsubAssestiveDevice[device]!.add(subDevice);
       selectedsubAssestiveDevice.refresh(); // Ensure UI updates
       update();
-      Get.snackbar(
-        'Selected: $subDevice',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $subDevice');
     }
   }
 

@@ -158,7 +158,7 @@ class AssestiveDevice extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair),
+                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair.data),
                 const SizedBox(height: 16),
                 selectionSection,
                 const SizedBox(height: 16),
@@ -173,7 +173,7 @@ class AssestiveDevice extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair),
+                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair.data),
                 const SizedBox(height: 20),
                 assessmentCard(color: mainColor, title: 'Select Device', icon: Icons.search, child: selectionSection),
                 Obx(() => assestiveDeviceController.selectedAssestiveDevice.isNotEmpty
@@ -192,7 +192,7 @@ class AssestiveDevice extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair),
+                assessmentHeader(mainColor: mainColor, title: 'Assistive Device', icon: FontAwesomeIcons.wheelchair.data),
                 const SizedBox(height: 24),
                 // Place selection and details side-by-side on desktop if a device is selected
                 Obx(() {

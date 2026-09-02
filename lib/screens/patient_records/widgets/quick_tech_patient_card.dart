@@ -108,8 +108,8 @@ class _PatientCardWidgetState extends State<_PatientCardWidget> {
                   ),
                   child: Icon(
                     widget.isMale
-                        ? FontAwesomeIcons.person
-                        : FontAwesomeIcons.personDress,
+                        ? FontAwesomeIcons.person.data
+                        : FontAwesomeIcons.personDress.data,
                     color: Colors.white,
                     size: isDesktop ? 18.sp : 16.sp,
                   ),

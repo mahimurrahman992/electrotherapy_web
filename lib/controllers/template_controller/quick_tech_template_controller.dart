@@ -1,4 +1,5 @@
 import 'package:e_prescription/const/quick_tech_app_colors.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/const/quick_tech_styles.dart';
 import 'package:e_prescription/utils/api.dart';
 import 'package:e_prescription/widgets/quick_tech_custom_drawer.dart';
@@ -190,11 +191,7 @@ class QuickTechTemplateController extends GetxController {
 
   WidgetsBinding.instance.addPostFrameCallback((_) {
     if (Get.context != null) {
-      Get.snackbar(
-        "Saved",
-        "Template ID $templateId saved successfully!",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      QuickTechSnackbar.success("Template ID $templateId saved successfully!");
     }
   });
 }

@@ -1,5 +1,6 @@
 
 import 'package:e_prescription/const/electro_param_keys.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
@@ -328,7 +329,7 @@ class QuickTechPdfController extends GetxController {
         await OpenFile.open(filePath);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save PDF: $e');
+      QuickTechSnackbar.error('Failed to save PDF: $e');
     }
   }
 }

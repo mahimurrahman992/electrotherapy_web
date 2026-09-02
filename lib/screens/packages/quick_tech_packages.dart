@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/const/const.dart';
 import 'package:e_prescription/controllers/package_controller/quick_tech_package_controller.dart';
 import 'package:flutter/foundation.dart';
@@ -381,14 +382,7 @@ class _QuickTechPackagesState extends State<QuickTechPackages> {
 
   void _handleSubscribe(int id, bool isDark) {
     if (controller.userPackage.value?.packageOrder.paymentMessage != null) {
-      Get.snackbar(
-        'Payment Status',
-        controller.userPackage.value!.packageOrder.paymentMessage!,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 3),
-      );
+      QuickTechSnackbar.warning(controller.userPackage.value!.packageOrder.paymentMessage!, title: 'Payment Status');
     } else {
       _showPaymentProofDialog(id, isDark);
     }
@@ -618,14 +612,7 @@ class _QuickTechPackagesState extends State<QuickTechPackages> {
                                               Get.back();
                                               Future.delayed(
                                                   const Duration(milliseconds: 100), () {
-                                                Get.snackbar(
-                                                  'Payment Submitted!',
-                                                  'Awaiting admin verification.',
-                                                  snackPosition: SnackPosition.BOTTOM,
-                                                  backgroundColor: Colors.green,
-                                                  colorText: Colors.white,
-                                                  duration: const Duration(seconds: 3),
-                                                );
+                                                QuickTechSnackbar.success('Awaiting admin verification.', title: 'Payment Submitted!');
                                               });
                                             }
                                           },

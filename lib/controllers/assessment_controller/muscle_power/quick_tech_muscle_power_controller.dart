@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
 import 'package:e_prescription/utils/api.dart';
@@ -96,12 +97,12 @@ class QuickTechMusclePowerController extends GetxController {
         print("Response Body: ${response.body}");
         // Don't show snackbar for 429 (rate limit), just log it
         if (response.statusCode != 429) {
-          Get.snackbar("Error", "Failed to fetch grades: ${response.statusCode}");
+          QuickTechSnackbar.error("Failed to fetch grades: ${response.statusCode}");
         }
       }
     } catch (e) {
       print("Exception in fetchOxfordMuscleGrades: $e");
-      Get.snackbar("Error", "Exception: $e");
+      QuickTechSnackbar.error("Exception: $e");
     } finally {
       isLoadingOxford.value = false;
     }

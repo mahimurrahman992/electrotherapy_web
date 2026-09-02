@@ -132,7 +132,7 @@ class OnExamination extends StatelessWidget {
           items: examinationController.sensoryGradeOptions,
           value: examinationController.sensory.value,
           onChanged: examinationController.updateSensory,
-          icon: FontAwesomeIcons.eyeLowVision,
+          icon: FontAwesomeIcons.eyeLowVision.data,
           infoContent: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: examinationController.sensoryGradeList.map(
@@ -152,7 +152,7 @@ class OnExamination extends StatelessWidget {
           items: examinationController.motorGradeOptions,
           value: examinationController.motor.value,
           onChanged: (value) => examinationController.updateMotor(value!),
-          icon: FontAwesomeIcons.personRunning,
+          icon: FontAwesomeIcons.personRunning.data,
           infoContent: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: examinationController.motorGradeList.map(
@@ -169,7 +169,7 @@ class OnExamination extends StatelessWidget {
           items: examinationController.muscleToneOptions,
           value: examinationController.muscleTone.value,
           onChanged: (value) => examinationController.updateMuscleTone(value!),
-          icon: FontAwesomeIcons.dumbbell,
+          icon: FontAwesomeIcons.dumbbell.data,
           infoContent: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: examinationController.muscleToneList.map(
@@ -189,7 +189,7 @@ class OnExamination extends StatelessWidget {
           items: examinationController.spasticityOptions,
           value: examinationController.spasticity.value,
           onChanged: (value) => examinationController.updateSpasticity(value),
-          icon: FontAwesomeIcons.personWalking,
+          icon: FontAwesomeIcons.personWalking.data,
           infoContent: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: examinationController.spasticityList.map(
@@ -209,7 +209,7 @@ class OnExamination extends StatelessWidget {
           items: examinationController.bowelBladderControlOptions,
           value: examinationController.bowelBladderControl.value,
           onChanged: (value) => examinationController.updateBowelBladderControl(value!),
-          icon: FontAwesomeIcons.toilet,
+          icon: FontAwesomeIcons.toilet.data,
           infoContent: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: examinationController.bowelBladderControlList.map(
@@ -225,7 +225,7 @@ class OnExamination extends StatelessWidget {
           txtcolor: textColor,
           lebelcolor: iconColor,
           backcolor: bgColor,
-          icon: FontAwesomeIcons.bedPulse,
+          icon: FontAwesomeIcons.bedPulse.data,
           iconcolor: iconColor,
           label: 'Any limb or organ absence',
           controller: examinationController.limborganabsenseController,
@@ -235,7 +235,7 @@ class OnExamination extends StatelessWidget {
           txtcolor: textColor,
           lebelcolor: iconColor,
           backcolor: bgColor,
-          icon: FontAwesomeIcons.scaleBalanced,
+          icon: FontAwesomeIcons.scaleBalanced.data,
           iconcolor: iconColor,
           label: 'Balancing or coordination',
           controller: examinationController.balancingCoordinatingController,

@@ -59,7 +59,7 @@ class _QuickTechProfilePageState extends State<QuickTechProfilePage> {
                     padding: const EdgeInsets.only(right: 12),
                     child: TextButton.icon(
                       onPressed: () => Get.toNamed('/profileupdate'),
-                      icon: const Icon(FontAwesomeIcons.penToSquare, color: Colors.white, size: 16),
+                      icon: Icon(FontAwesomeIcons.penToSquare.data, color: Colors.white, size: 16),
                       label: const Text('Edit Profile', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.white.withValues(alpha: 0.15),
@@ -96,26 +96,26 @@ class _QuickTechProfilePageState extends State<QuickTechProfilePage> {
                     // English Info Card
                     _buildSectionCard(
                       title: 'English Information',
-                      icon: FontAwesomeIcons.globe,
+                      icon: FontAwesomeIcons.globe.data,
                       tiles: [
-                        _tileData(FontAwesomeIcons.building, 'Center Name', profileController.centerName.value, 'No Center Name'),
-                        _tileData(FontAwesomeIcons.mapLocationDot, 'Center Address', profileController.centerAddress.value, 'No Center Address'),
-                        _tileData(FontAwesomeIcons.user, 'Doctor Name', profileController.name.value, 'No Name'),
-                        _tileData(FontAwesomeIcons.scaleBalanced, 'Therapy Center', profileController.therapyCenter.value, 'No Therapy Center'),
-                        _tileData(FontAwesomeIcons.userDoctor, 'Designation', profileController.designation.value, 'No Designation'),
-                        _tileData(FontAwesomeIcons.locationArrow, 'Clinic Address', profileController.address.value, 'No Clinic Address'),
+                        _tileData(FontAwesomeIcons.building.data, 'Center Name', profileController.centerName.value, 'No Center Name'),
+                        _tileData(FontAwesomeIcons.mapLocationDot.data, 'Center Address', profileController.centerAddress.value, 'No Center Address'),
+                        _tileData(FontAwesomeIcons.user.data, 'Doctor Name', profileController.name.value, 'No Name'),
+                        _tileData(FontAwesomeIcons.scaleBalanced.data, 'Designation', profileController.therapyCenter.value, 'No Therapy Center'),
+                        _tileData(FontAwesomeIcons.userDoctor.data, 'Degree', profileController.designation.value, 'No Designation'),
+                        _tileData(FontAwesomeIcons.locationArrow.data, 'Clinic Address', profileController.address.value, 'No Clinic Address'),
                       ],
                     ),
                     const SizedBox(height: 24),
                     // Bengali Info Card
                     _buildSectionCard(
                       title: 'বাংলা তথ্য ',
-                      icon: FontAwesomeIcons.language,
+                      icon: FontAwesomeIcons.language.data,
                       tiles: [
-                        _tileData(FontAwesomeIcons.user, 'ডাক্তারের নাম', profileController.bnFirstName.value, 'নাম নেই'),
-                        _tileData(FontAwesomeIcons.houseChimneyMedical, 'থেরাপি সেন্টার', profileController.bnTherapyCenter.value, 'থেরাপি সেন্টার নেই'),
-                        _tileData(FontAwesomeIcons.userDoctor, 'পদবী', profileController.bnDesignation.value, 'পদবী নেই'),
-                        _tileData(FontAwesomeIcons.locationArrow, 'ক্লিনিক ঠিকানা', profileController.bnClinicAddress.value, 'ঠিকানা নেই'),
+                        _tileData(FontAwesomeIcons.user.data, 'ডাক্তারের নাম', profileController.bnFirstName.value, 'নাম নেই'),
+                        _tileData(FontAwesomeIcons.houseChimneyMedical.data, 'পদবী', profileController.bnTherapyCenter.value, 'থেরাপি সেন্টার নেই'),
+                        _tileData(FontAwesomeIcons.userDoctor.data, 'ডিগ্রি', profileController.bnDesignation.value, 'ডিগ্রি নেই'),
+                        _tileData(FontAwesomeIcons.locationArrow.data, 'ক্লিনিক ঠিকানা', profileController.bnClinicAddress.value, 'ঠিকানা নেই'),
                       ],
                     ),
                     if (!widget.isAppBarVisible) ...[
@@ -228,7 +228,7 @@ class _QuickTechProfilePageState extends State<QuickTechProfilePage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(FontAwesomeIcons.building, size: 12,
+                              Icon(FontAwesomeIcons.building.data, size: 12,
                                   color: isDay ? Colors.grey[500] : Colors.grey[400]),
                               const SizedBox(width: 6),
                               Flexible(
@@ -298,7 +298,7 @@ class _QuickTechProfilePageState extends State<QuickTechProfilePage> {
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(FontAwesomeIcons.building, size: 12,
+                                Icon(FontAwesomeIcons.building.data, size: 12,
                                     color: isDay ? Colors.grey[500] : Colors.grey[400]),
                                 const SizedBox(width: 6),
                                 Flexible(

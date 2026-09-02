@@ -99,7 +99,7 @@ class ReflexSelection extends StatelessWidget {
                     isInfoExpanded.toggle();
                   },
                   icon: Icon(
-                    FontAwesomeIcons.circleInfo,
+                    FontAwesomeIcons.circleInfo.data,
                     size: 20,
                     color: isInfoExpanded.value 
                         ? (isDay ? QuickTechAppColors.lightmaincolor : QuickTechAppColors.darkmaincolor) 

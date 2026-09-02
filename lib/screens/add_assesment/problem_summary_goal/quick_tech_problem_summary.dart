@@ -56,7 +56,7 @@ class ProblemSummary extends StatelessWidget {
         QuickTechCustomTextField(
           height: 100,
           maxline: 4,
-          icon: FontAwesomeIcons.kitMedical,
+          icon: FontAwesomeIcons.kitMedical.data,
           iconcolor: iconLabelColor,
           lebelcolor: iconLabelColor,
           txtcolor: txtColor,

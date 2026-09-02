@@ -4,6 +4,7 @@ import 'package:e_prescription/screens/add_prescription/patient_info/quick_tech_
 import 'package:e_prescription/screens/add_prescription/rx_info/quick_tech_custom_RX_part.dart';
 import '../../const/const.dart';
 import '../../widgets/quick_tech_custom_drawer.dart';
+import '../../widgets/quick_tech_snackbar.dart';
 import 'diagnosis/quick_tech_custom_diagnosis_info.dart';
 
 class QuickTechPrescriptionForm extends StatefulWidget {
@@ -135,12 +136,7 @@ class _QuickTechPrescriptionFormState extends State<QuickTechPrescriptionForm>
                             onPressed: () {
                               _clearAllData();
                               Navigator.of(context).pop();
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Form reset successfully'),
-                                  backgroundColor: Colors.green,
-                                ),
-                              );
+                              QuickTechSnackbar.success('Form reset successfully');
                               _tabController.animateTo(0);
                             },
                           ),
@@ -154,13 +150,8 @@ class _QuickTechPrescriptionFormState extends State<QuickTechPrescriptionForm>
                 icon: Icon(Icons.preview, color: QuickTechAppColors.white),
                 onPressed: () async {
                   if (patientInfoController.patientId.value == 0) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Please save patient info first before previewing.',
-                        ),
-                        backgroundColor: Colors.red,
-                      ),
+                    QuickTechSnackbar.error(
+                      'Please save patient info first before previewing.',
                     );
                     _tabController.animateTo(0);
                     return;
@@ -317,12 +308,7 @@ class _QuickTechPrescriptionFormState extends State<QuickTechPrescriptionForm>
                     }
                   } else if (_tabController.index == 1) {
                     if (patientInfoController.patientId.value == 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please save patient info first.'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
+                      QuickTechSnackbar.error('Please save patient info first.');
                       _tabController.animateTo(0);
                       return;
                     }
@@ -348,12 +334,7 @@ class _QuickTechPrescriptionFormState extends State<QuickTechPrescriptionForm>
                     }
                   } else if (_tabController.index == 2) {
                     if (patientInfoController.patientId.value == 0) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please save patient info first.'),
-                          backgroundColor: Colors.red,
-                        ),
-                      );
+                      QuickTechSnackbar.error('Please save patient info first.');
                       _tabController.animateTo(0);
                       return;
                     }

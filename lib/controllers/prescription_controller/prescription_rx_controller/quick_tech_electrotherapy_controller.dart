@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
 import 'package:e_prescription/locator.dart';
@@ -193,10 +194,10 @@ class QuickTechElectrotherapyController extends GetxController {
           }
         }
       } else {
-        Get.snackbar("Error", "Failed to fetch therapies: ${response.statusCode}");
+        QuickTechSnackbar.error("Failed to fetch therapies: ${response.statusCode}");
       }
     } catch (e) {
-      Get.snackbar("Error", "Something went wrong: $e");
+      QuickTechSnackbar.error("Something went wrong: $e");
     }
   }
 

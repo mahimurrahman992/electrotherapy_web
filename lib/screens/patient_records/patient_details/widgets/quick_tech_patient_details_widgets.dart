@@ -1,5 +1,6 @@
 // quick_tech_patient_details_widgets.dart
 import 'package:e_prescription/const/quick_tech_app_colors.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/patient_controller/quick_tech_patient_controller.dart';
 import 'package:e_prescription/controllers/theme_controller/quick_tech_theme_controller.dart';
 import 'package:e_prescription/locator.dart';
@@ -107,7 +108,7 @@ class _PrescriptionCardState extends State<_PrescriptionCard> {
   Future<void> _openPrescription() async {
     final token = QuickTechAuthStorageService.getToken();
     if (token == null) {
-      Get.snackbar('Error', 'Authentication token not found');
+      QuickTechSnackbar.error('Authentication token not found');
       return;
     }
     if (widget.templateId == null) {
@@ -218,16 +219,11 @@ class _PrescriptionCardState extends State<_PrescriptionCard> {
           arguments: patientController.prescriptionPreviewPdfBytes.value!,
         );
       } else if (error != null && error.isNotEmpty) {
-        Get.snackbar(
-          'Error',
-          error,
-          backgroundColor: const Color(0xFFEF4444),
-          colorText: Colors.white,
-        );
+        QuickTechSnackbar.error(error);
       }
     } catch (e) {
       Get.back();
-      Get.snackbar('Error', 'Failed to load PDF: ${e.toString()}');
+      QuickTechSnackbar.error('Failed to load PDF: ${e.toString()}');
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
@@ -136,26 +137,14 @@ requestData['left_right'] = leftRights;
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print('✅ Bulk Drug History stored successfully: $responseData');
-      Get.snackbar(
-        'Success',
-        'Drug History stored successfully!',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Drug History stored successfully!');
     } else {
       throw Exception('Failed to store Drug History: ${responseData['message'] ?? 'Unknown error'}');
     }
 
   } catch (e) {
     print('❌ Failed to store Drug History: $e');
-    Get.snackbar(
-      'Error',
-      'Failed to store Drug History: $e',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('Failed to store Drug History: $e');
   } finally {
     isLoadingDrugHistory.value = false;
   }
@@ -235,7 +224,7 @@ requestData['left_right'] = leftRights;
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch drug history');
+      QuickTechSnackbar.error('Failed to fetch drug history');
     } finally {
       isLoadingDrugHistory.value = false;
     }
@@ -291,13 +280,7 @@ requestData['left_right'] = leftRights;
       }
       selectedDrugHistory.refresh();
       update();
-      Get.snackbar(
-        'Selected: $history',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $history');
     }
   }
 
@@ -320,13 +303,7 @@ requestData['left_right'] = leftRights;
       selectedsubDrugHistory[history]!.add(subHistory);
       selectedsubDrugHistory.refresh();
       update();
-      Get.snackbar(
-        'Selected: $subHistory',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $subHistory');
     }
   }
 

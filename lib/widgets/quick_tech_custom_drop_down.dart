@@ -4,6 +4,7 @@ import 'package:e_prescription/controllers/assessment_controller/quick_tech_asse
 
 import 'package:flutter/material.dart';
 import 'package:e_prescription/locator.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 class QuickTechCustomDropDown<T> extends StatelessWidget {
   final String label;
@@ -53,13 +54,7 @@ class QuickTechCustomDropDown<T> extends StatelessWidget {
     String field,
     String value,
   ) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$field: $value'),
-        backgroundColor: Colors.green,
-        duration: Duration(milliseconds: 500),
-      ),
-    );
+    QuickTechSnackbar.success('$field: $value');
   }
 
   @override

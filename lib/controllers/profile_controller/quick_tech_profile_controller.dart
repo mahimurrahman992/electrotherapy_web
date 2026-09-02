@@ -1,4 +1,5 @@
 import 'package:e_prescription/models/profile/profile_model.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
 import 'package:e_prescription/utils/api.dart';
 import 'package:get/get.dart';
@@ -183,15 +184,15 @@ class QuickTechProfileController extends GetxController {
         // Refresh profile data first
         await fetchProfile();
         Get.back(); // Go back to profile page
-        Get.snackbar('Success', data['message'] ?? 'Profile updated successfully');
+        QuickTechSnackbar.success(data['message'] ?? 'Profile updated successfully');
       } else {
         final errorData = json.decode(response.body);
         error.value = errorData['message'] ?? 'Failed to update profile: ${response.statusCode}';
-        Get.snackbar('Error', error.value);
+        QuickTechSnackbar.error(error.value);
       }
     } catch (e) {
       error.value = 'Error: ${e.toString()}';
-      Get.snackbar('Error', error.value);
+      QuickTechSnackbar.error(error.value);
     } finally {
       isLoading.value = false;
     }

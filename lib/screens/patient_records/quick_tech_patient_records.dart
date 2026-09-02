@@ -1,5 +1,6 @@
 // quick_tech_patient_records.dart
 import 'package:e_prescription/const/quick_tech_app_colors.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 import 'package:e_prescription/controllers/patient_controller/quick_tech_patient_controller.dart';
 import 'package:e_prescription/controllers/theme_controller/quick_tech_theme_controller.dart';
@@ -381,8 +382,7 @@ class _DesktopPatientGrid extends StatelessWidget {
             final ok = await patientController.deletePatient(patient.id);
             if (!ok) {
               patientController.patients.insert(index, patient);
-              Get.snackbar('Error', 'Failed to delete patient',
-                  backgroundColor: Colors.red, colorText: Colors.white);
+              QuickTechSnackbar.error('Failed to delete patient');
             }
           },
           child: customPatientCard(patient: patient),
@@ -420,8 +420,7 @@ class _MobilePatientList extends StatelessWidget {
             final ok = await patientController.deletePatient(patient.id);
             if (!ok) {
               patientController.patients.insert(index, patient);
-              Get.snackbar('Error', 'Failed to delete patient',
-                  backgroundColor: Colors.red, colorText: Colors.white);
+              QuickTechSnackbar.error('Failed to delete patient');
             }
           },
           child: customPatientCard(patient: patient),

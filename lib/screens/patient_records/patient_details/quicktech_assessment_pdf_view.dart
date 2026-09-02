@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
 import 'package:e_prescription/controllers/patient_controller/quick_tech_patient_controller.dart';
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -48,30 +49,22 @@ class QuicktechAssessmentPdfView extends StatelessWidget {
                         const androidDownloads = '/storage/emulated/0/Download';
                         final file = File('$androidDownloads/$fileName');
                         await file.writeAsBytes(pdfBytes);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Downloaded to $androidDownloads/$fileName')),
-                        );
+                        QuickTechSnackbar.success('Downloaded to $androidDownloads/$fileName');
                       } else {
                         // iOS / desktop: use the platform Downloads / documents dir
                         final dir = Platform.isIOS
                             ? await getApplicationDocumentsDirectory()
                             : await getDownloadsDirectory();
                         if (dir == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Could not find Downloads folder.')),
-                          );
+                          QuickTechSnackbar.error('Could not find Downloads folder.');
                           return;
                         }
                         final file = File('${dir.path}/$fileName');
                         await file.writeAsBytes(pdfBytes);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Downloaded to ${dir.path}/$fileName')),
-                        );
+                        QuickTechSnackbar.success('Downloaded to ${dir.path}/$fileName');
                       }
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Download failed: $e')),
-                      );
+                      QuickTechSnackbar.error('Download failed: $e');
                     }
                   },
                 ),
@@ -84,9 +77,7 @@ class QuicktechAssessmentPdfView extends StatelessWidget {
                         onLayout: (format) async => pdfBytes,
                       );
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Print failed: $e')),
-                      );
+                      QuickTechSnackbar.error('Print failed: $e');
                     }
                   },
                 ),

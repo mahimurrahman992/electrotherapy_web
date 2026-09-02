@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 /// Platform-aware notification helper
 /// - Web: Uses Dialog (reliable)
@@ -31,13 +32,10 @@ class UIHelper {
       );
     } else {
       // Mobile/Desktop: Use Snackbar
-      Get.snackbar(
-        title,
+      QuickTechSnackbar.show(
         message,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: duration,
-        backgroundColor: backgroundColor ?? Colors.red,
-        colorText: textColor ?? Colors.white,
+        title: title,
+        background: backgroundColor ?? Colors.red,
       );
     }
   }

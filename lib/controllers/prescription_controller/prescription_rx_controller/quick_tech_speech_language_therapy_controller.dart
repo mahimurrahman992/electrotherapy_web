@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
 import 'package:e_prescription/locator.dart';
 import 'package:e_prescription/models/rx_models/speech_language_therapy.dart';
@@ -289,7 +290,7 @@ class QuickTechSpeechLanguageTherapyController extends GetxController {
       printSelectedTherapiesData();
     } else {
       String errorMsg = errorMessages.isNotEmpty ? ': ${errorMessages.first}' : '';
-      Get.snackbar("Error", "Failed to store speech & language therapies$errorMsg");
+      QuickTechSnackbar.error("Failed to store speech & language therapies$errorMsg");
     }
   }
 

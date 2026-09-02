@@ -1,5 +1,6 @@
 
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/disability_types_controller.dart';
@@ -116,7 +117,7 @@ var onExaminationMap = <String, Map<String, dynamic>>{}.obs;
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch On Examinations');
+      QuickTechSnackbar.error('Failed to fetch On Examinations');
     } finally {
       isLoadingOnExaminations.value = false;
     }
@@ -189,13 +190,7 @@ var onExaminationMap = <String, Map<String, dynamic>>{}.obs;
         });
       }
       update();
-      Get.snackbar(
-        'Selected: $examination',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $examination');
     }
   }
 
@@ -217,13 +212,7 @@ var onExaminationMap = <String, Map<String, dynamic>>{}.obs;
       selectedSubExaminations[examination]!.add(subExamination);
       selectedSubExaminations.refresh();
       update();
-      Get.snackbar(
-        'Selected: $subExamination',
-        '',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $subExamination');
     }
   }
 

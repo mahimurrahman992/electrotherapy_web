@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/assestive_device_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/cheif_complain_controller.dart';
 import 'package:e_prescription/controllers/prescription_controller/diagnosis_controller/diagnosis_controller.dart';
@@ -134,26 +135,14 @@ requestData['left_right'] = leftRights;
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print('✅ Bulk Radiological Findings stored successfully: $responseData');
-      Get.snackbar(
-        'Success',
-        'Radiological Findings stored successfully!',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Radiological Findings stored successfully!');
     } else {
       throw Exception('Failed to store Radiological Findings: ${responseData['message'] ?? 'Unknown error'}');
     }
 
   } catch (e) {
     print('❌ Failed to store Radiological Findings: $e');
-    Get.snackbar(
-      'Error',
-      'Failed to store Radiological Findings: $e',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
-    );
+    QuickTechSnackbar.error('Failed to store Radiological Findings: $e');
   } finally {
     isLoadingRadiologicalFindings.value = false;
   }
@@ -237,7 +226,7 @@ requestData['left_right'] = leftRights;
         }
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to fetch radiological findings');
+      QuickTechSnackbar.error('Failed to fetch radiological findings');
     } finally {
       isLoadingRadiologicalFindings.value = false;
     }
@@ -293,13 +282,7 @@ requestData['left_right'] = leftRights;
       }
       selectedRadioLogicalFindings.refresh();
       update();
-      Get.snackbar(
-        'Selected: $finding',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,duration: Duration(milliseconds: 800),
-      );
+      QuickTechSnackbar.success('Selected: $finding');
     }
   }
 
@@ -320,13 +303,7 @@ requestData['left_right'] = leftRights;
       selectedsubRadiologicalFindings[finding]!.add(subFinding);
       selectedRadioLogicalFindings.refresh();
       update();
-      Get.snackbar(
-        'Selected: $subFinding',
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $subFinding');
     }
   }
 

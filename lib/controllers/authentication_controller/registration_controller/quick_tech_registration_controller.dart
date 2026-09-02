@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'dart:io';
 import 'package:e_prescription/screens/authentications/otp_verification/quick_tech_otp_verification.dart';
 import 'package:e_prescription/utils/api.dart';
@@ -101,27 +102,13 @@ class QuickTechRegistrationController extends GetxController {
   Future<void> register() async {
   if (!isValid) {
       errorMessage('Please fill all required fields');
-      Get.snackbar(
-        'Registration Error',
-        'Please fill all required fields',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(seconds: 4),
-        backgroundColor: const Color(0xFFD32F2F),
-        colorText: const Color(0xFFFFFFFF),
-      );
+      QuickTechSnackbar.error('Please fill all required fields', title: 'Registration Error');
       return;
     }
 
   if (passwordController.text.trim() != confirmPasswordController.text.trim()) {
       errorMessage('Password and Confirm Password do not match');
-      Get.snackbar(
-        'Registration Error',
-        'Password and Confirm Password do not match',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(seconds: 4),
-        backgroundColor: const Color(0xFFD32F2F),
-        colorText: const Color(0xFFFFFFFF),
-      );
+      QuickTechSnackbar.error('Password and Confirm Password do not match', title: 'Registration Error');
       return;
     }
 
@@ -163,14 +150,7 @@ class QuickTechRegistrationController extends GetxController {
           );
         } else {
           errorMessage('Selected image file not found');
-          Get.snackbar(
-            'Image Error',
-            'Selected image file not found. Please choose another image.',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 4),
-            backgroundColor: const Color(0xFFD32F2F),
-            colorText: const Color(0xFFFFFFFF),
-          );
+          QuickTechSnackbar.error('Selected image file not found. Please choose another image.', title: 'Image Error');
           isLoading(false);
           return;
         }
@@ -188,35 +168,16 @@ class QuickTechRegistrationController extends GetxController {
           if (data['mobile'] != null && data['mobile'].toString().isNotEmpty) {
             registeredMobile.value = data['mobile'].toString();
           }
-          Get.snackbar(
-            'OTP Token',
-            'Your verification code is: ${data['verifyToken']}',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 6),
-          );
+          QuickTechSnackbar.info('Your verification code is: ${data['verifyToken']}', title: 'OTP Token');
 
           Get.to(()=>QuickTechOtpVerification(mobile: registeredMobile.value, verifyToken: verifyToken.value));
         } else if (data['success'] == true || data['status'] == true) {
-          Get.snackbar(
-            'Success',
-            data['message']?.toString() ?? 'Registration successful',
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 4),
-            backgroundColor: Colors.green,
-            colorText: const Color(0xFFFFFFFF),
-          );
+          QuickTechSnackbar.success(data['message']?.toString() ?? 'Registration successful');
           Get.offAllNamed('/home');
         } else {
           final errMsg = data['message']?.toString() ?? 'Registration failed';
           errorMessage(errMsg);
-          Get.snackbar(
-            'Registration Error',
-            errMsg,
-            snackPosition: SnackPosition.BOTTOM,
-            duration: Duration(seconds: 4),
-            backgroundColor: const Color(0xFFD32F2F),
-            colorText: const Color(0xFFFFFFFF),
-          );
+          QuickTechSnackbar.error(errMsg, title: 'Registration Error');
         }
       } else {
         String errMsg;
@@ -239,26 +200,12 @@ class QuickTechRegistrationController extends GetxController {
         }
 
         errorMessage(errMsg);
-        Get.snackbar(
-          'Registration Failed',
-          errMsg,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 4),
-          backgroundColor: const Color(0xFFD32F2F),
-          colorText: const Color(0xFFFFFFFF),
-        );
+        QuickTechSnackbar.error(errMsg, title: 'Registration Failed');
       }
     } catch (e) {
       final errMsg = 'Registration failed: ${e.toString()}';
       errorMessage(errMsg);
-      Get.snackbar(
-        'Registration Error',
-        errMsg,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(seconds: 4),
-        backgroundColor: const Color(0xFFD32F2F),
-        colorText: const Color(0xFFFFFFFF),
-      );
+      QuickTechSnackbar.error(errMsg, title: 'Registration Error');
     } finally {
       isLoading(false);
     }

@@ -1,9 +1,9 @@
 
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 
 import 'package:e_prescription/models/package_model.dart';
 import 'package:e_prescription/services/package_service.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -68,13 +68,7 @@ Future<void> _initData() async {
       allPackages.value = response.packages;
     } catch (e) {
       errorMessage.value = e.toString().replaceAll('Exception: ', '');
-      Get.snackbar(
-        'Error',
-        errorMessage.value,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: const Color.fromARGB(255, 244, 67, 54),
-        colorText: const Color.fromARGB(255, 255, 255, 255),
-      );
+      QuickTechSnackbar.error(errorMessage.value);
     } finally {
       isLoading.value = false;
     }
@@ -149,13 +143,7 @@ Future<void> _initData() async {
       } else {
         // For other errors, show snackbar
         print('🔴 Showing error snackbar');
-        Get.snackbar(
-          'Error',
-          msg,
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: const Color.fromARGB(255, 244, 67, 54),
-          colorText: const Color.fromARGB(255, 255, 255, 255),
-        );
+        QuickTechSnackbar.error(msg);
       }
     } finally {
       isSubscribing.value = false;

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/assessment_controller/patient_info/quick_tech_patient_info_controlle.dart';
 import 'package:e_prescription/controllers/assessment_controller/quick_tech_assessment_controller.dart';
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
@@ -111,13 +112,7 @@ class QuickTechAssestiveDeviceController extends GetxController {
     if (!selectedAssestiveDevice.contains(suggestiveDevice)) {
       selectedAssestiveDevice.add(suggestiveDevice);
       update();
-      Get.snackbar(
-        'Selected: $suggestiveDevice', 
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $suggestiveDevice');
     }
   }
 
@@ -134,13 +129,7 @@ class QuickTechAssestiveDeviceController extends GetxController {
     if (!selectedsubAssestiveDevice[assestiveDevice]!.contains(addSubassestiveDevice)) {
       selectedsubAssestiveDevice[assestiveDevice]!.add(addSubassestiveDevice);
       update();
-      Get.snackbar(
-        'Selected: $addSubassestiveDevice', 
-        '',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+      QuickTechSnackbar.success('Selected: $addSubassestiveDevice');
     }
   }
 

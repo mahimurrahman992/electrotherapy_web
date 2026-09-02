@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/controllers/prescription_controller/patient_info_controller/patient_info_controller.dart';
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
 import 'package:e_prescription/utils/api.dart';
@@ -216,7 +217,7 @@ class QuickTechMiscellaneousTherapyController extends GetxController {
   Future<void> submitMiscellaneous() async {
     // If no therapies are selected, show info message (since it's optional)
     if (!hasSelectedTherapies()) {
-      Get.snackbar("Info", "No miscellaneous therapies selected - skipping this section");
+      QuickTechSnackbar.info("No miscellaneous therapies selected - skipping this section");
       return;
     }
 
@@ -280,7 +281,7 @@ class QuickTechMiscellaneousTherapyController extends GetxController {
       printSelectedTherapiesData();
     } else {
       String errorMsg = errorMessages.isNotEmpty ? ': ${errorMessages.first}' : '';
-      Get.snackbar("Error", "Failed to store miscellaneous therapies$errorMsg");
+      QuickTechSnackbar.error("Failed to store miscellaneous therapies$errorMsg");
     }
   }
 }

@@ -96,16 +96,16 @@ Widget generalInfoPage() {
       tf(icon: Icons.person, label: "Spouse Name", controller: c.spouseNameController, onchanged: c.updateSpouseName),
       tf(icon: Icons.cake, label: "Age", controller: c.ageController, onchanged: (v) => c.updateAge(int.tryParse(v) ?? 0), keyboardType: TextInputType.number),
       dd<String?>(label: "Sex", items: c.sexOptions, value: c.sex.value, onChanged: (v) => c.updateSex(v!), icon: Icons.accessibility),
-      dd<String?>(label: "Occupation", items: c.occupationOptions, value: c.occupation.value, onChanged: c.updateOccupation, icon: FontAwesomeIcons.briefcase, enableOthers: true, dialogTitle: "Add New Occupation", dialogHint: "Enter New Occupation"),
+      dd<String?>(label: "Occupation", items: c.occupationOptions, value: c.occupation.value, onChanged: c.updateOccupation, icon: FontAwesomeIcons.briefcase.data, enableOthers: true, dialogTitle: "Add New Occupation", dialogHint: "Enter New Occupation"),
       dd<String?>(label: "Marital Status", items: c.maritalStatusOptions, value: c.maritalStatus.value, onChanged: (v) => c.updateMaritalStatus(v!), icon: Icons.favorite),
       tf(icon: Icons.bloodtype, label: "Blood Group", controller: c.bloodGroupController, onchanged: c.updateBloodGroup),
       tf(icon: Icons.person, label: "Guardian Name", controller: c.guardianNameController, onchanged: c.updateGuardianName),
       tf(icon: Icons.fingerprint, label: "Voter ID", controller: c.voterIDController, onchanged: c.updateVoterID),
       tf(icon: Icons.calendar_today, label: "Date of Birth", controller: c.birthDateController, onTap: () => c.selectDateOfBirth(Get.context!)),
       tf(icon: Icons.view_comfortable_outlined, label: "Birth Registration No", controller: c.birthRegistrationNoController, onchanged: c.updateBirthRegistrationNo),
-      tf(icon: FontAwesomeIcons.wheelchairMove, label: "Disability ID No", controller: c.disabilityIDController, onchanged: c.updateDisabilityID),
+      tf(icon: FontAwesomeIcons.wheelchairMove.data, label: "Disability ID No", controller: c.disabilityIDController, onchanged: c.updateDisabilityID),
       dd<String?>(label: "Education of Patient", items: c.educationOptions, value: c.educationOfPatient.value, onChanged: (v) => c.updateEducationOfPatient(v!), icon: Icons.school),
-      dd<String?>(label: "Education of Guardian", items: c.educationOptions, value: c.educationOfGuardian.value, onChanged: (v) => c.updateEducationOfGuardian(v!), icon: FontAwesomeIcons.graduationCap),
+      dd<String?>(label: "Education of Guardian", items: c.educationOptions, value: c.educationOfGuardian.value, onChanged: (v) => c.updateEducationOfGuardian(v!), icon: FontAwesomeIcons.graduationCap.data),
     ];
 
     // Build grid: n columns, gap between items

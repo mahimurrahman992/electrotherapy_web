@@ -1,4 +1,5 @@
 import 'package:e_prescription/services/auth_services/quick_tech_auth_storage_service.dart';
+import 'package:e_prescription/widgets/quick_tech_snackbar.dart';
 import 'package:e_prescription/utils/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -27,11 +28,7 @@ class QuickTechPatientController extends GetxController {
         final data = json.decode(response.body);
         if (response.statusCode == 200 || data['success'] == true) {
           print('Patient deleted successfully.');
-           Get.snackbar(duration: Duration(seconds: 1),
-             'ID ${patientId} deleted',
-             '${data['message']}',
-             snackPosition: SnackPosition.BOTTOM,
-           );
+           QuickTechSnackbar.info('${data['message']}', title: 'ID ${patientId} deleted');
         } else {
           print('Failed to delete patient. Message: ${data['message']}');
         }
@@ -213,21 +210,11 @@ class QuickTechPatientController extends GetxController {
         }
         print('Failed to fetch patients. Status: $errorMsg');
         // Show snackbar for rate limit or other errors
-        Get.snackbar(
-          'Error',
-          errorMsg,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 2),
-        );
+        QuickTechSnackbar.error(errorMsg);
       }
     } catch (e) {
       print('Error fetching patients: $e');
-      Get.snackbar(
-        'Error',
-        'Network error: ${e.toString()}',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(seconds: 2),
-      );
+      QuickTechSnackbar.error('Network error: ${e.toString()}');
     }
     isPatientsLoading.value = false;
   }
