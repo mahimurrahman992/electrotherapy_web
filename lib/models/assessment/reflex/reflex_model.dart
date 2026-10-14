@@ -1,5 +1,7 @@
 
 
+import 'package:e_prescription/const/quick_tech_json_parser.dart';
+
 class ReflexSubcategory {
   final int? id;
   final String? deepTendonId;
@@ -19,16 +21,24 @@ class ReflexSubcategory {
 
   factory ReflexSubcategory.fromJson(Map<String, dynamic> json) {
     return ReflexSubcategory(
-      id: json['id'],
-      deepTendonId: json['deep_tendon_id'],
-      numericValue: json['numeric_value'],
-      textValue: json['text_value'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      id: parseInt(json['id']),
+      deepTendonId: parseString(json['deep_tendon_id']),
+      numericValue: parseString(json['numeric_value']),
+      textValue: parseString(json['text_value']),
+      createdAt: parseString(json['created_at']),
+      updatedAt: parseString(json['updated_at']),
     );
   }
-}
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'deep_tendon_id': deepTendonId,
+    'numeric_value': numericValue,
+    'text_value': textValue,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+  };
+}
 
 class DeepTendon {
   final int? id;
@@ -51,17 +61,35 @@ class DeepTendon {
 
   factory DeepTendon.fromJson(Map<String, dynamic> json) {
     return DeepTendon(
-      id: json['id'],
-      reflexId: json['reflex_id'],
-      name: json['name'],
-      type: json['type'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      reflexSubcategories: (json['reflex_subcategories'] as List<dynamic>?)?.map((e) => ReflexSubcategory.fromJson(e)).toList(),
+      id: parseInt(json['id']),
+      reflexId: parseString(json['reflex_id']),
+      name: parseString(json['name']),
+      type: parseString(json['type']),
+      createdAt: parseString(json['created_at']),
+      updatedAt: parseString(json['updated_at']),
+      reflexSubcategories: json['reflex_subcategories'] is List
+          ? (json['reflex_subcategories'] as List)
+              .map((e) => e is Map<String, dynamic>
+                  ? ReflexSubcategory.fromJson(e)
+                  : e is Map
+                      ? ReflexSubcategory.fromJson(Map<String, dynamic>.from(e))
+                      : null)
+              .whereType<ReflexSubcategory>()
+              .toList()
+          : null,
     );
   }
-}
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'reflex_id': reflexId,
+    'name': name,
+    'type': type,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'reflex_subcategories': reflexSubcategories?.map((e) => e.toJson()).toList(),
+  };
+}
 
 class ReflexModel {
   final int? id;
@@ -80,13 +108,30 @@ class ReflexModel {
 
   factory ReflexModel.fromJson(Map<String, dynamic> json) {
     return ReflexModel(
-      id: json['id'],
-      name: json['name'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      deepTendons: (json['deep_tendons'] as List<dynamic>?)?.map((e) => DeepTendon.fromJson(e)).toList(),
+      id: parseInt(json['id']),
+      name: parseString(json['name']),
+      createdAt: parseString(json['created_at']),
+      updatedAt: parseString(json['updated_at']),
+      deepTendons: json['deep_tendons'] is List
+          ? (json['deep_tendons'] as List)
+              .map((e) => e is Map<String, dynamic>
+                  ? DeepTendon.fromJson(e)
+                  : e is Map
+                      ? DeepTendon.fromJson(Map<String, dynamic>.from(e))
+                      : null)
+              .whereType<DeepTendon>()
+              .toList()
+          : null,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'deep_tendons': deepTendons?.map((e) => e.toJson()).toList(),
+  };
 }
 
 class ReflexGrade {
@@ -98,13 +143,25 @@ class ReflexGrade {
     this.reflexGrades,
   });
 
-  ReflexGrade.fromJson(Map<String, dynamic> json)
-    : message = json['message'] as String?,
-      reflexGrades = (json['reflex_grades'] as List?)?.map((dynamic e) => ReflexGrades.fromJson(e as Map<String,dynamic>)).toList();
+  factory ReflexGrade.fromJson(Map<String, dynamic> json) {
+    return ReflexGrade(
+      message: parseString(json['message']),
+      reflexGrades: json['reflex_grades'] is List
+          ? (json['reflex_grades'] as List)
+              .map((e) => e is Map<String, dynamic>
+                  ? ReflexGrades.fromJson(e)
+                  : e is Map
+                      ? ReflexGrades.fromJson(Map<String, dynamic>.from(e))
+                      : null)
+              .whereType<ReflexGrades>()
+              .toList()
+          : null,
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-    'message' : message,
-    'reflex_grades' : reflexGrades?.map((e) => e.toJson()).toList()
+    'message': message,
+    'reflex_grades': reflexGrades?.map((e) => e.toJson()).toList(),
   };
 }
 
@@ -125,20 +182,23 @@ class ReflexGrades {
     this.updatedAt,
   });
 
-  ReflexGrades.fromJson(Map<String, dynamic> json)
-    : id = json['id'] as int?,
-      fieldType = json['field_type'] as String?,
-      numericValue = json['numeric_value'] as String?,
-      textValue = json['text_value'] as String?,
-      createdAt = json['created_at'] as String?,
-      updatedAt = json['updated_at'] as String?;
+  factory ReflexGrades.fromJson(Map<String, dynamic> json) {
+    return ReflexGrades(
+      id: parseInt(json['id']),
+      fieldType: parseString(json['field_type']),
+      numericValue: parseString(json['numeric_value']),
+      textValue: parseString(json['text_value']),
+      createdAt: parseString(json['created_at']),
+      updatedAt: parseString(json['updated_at']),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-    'id' : id,
-    'field_type' : fieldType,
-    'numeric_value' : numericValue,
-    'text_value' : textValue,
-    'created_at' : createdAt,
-    'updated_at' : updatedAt
+    'id': id,
+    'field_type': fieldType,
+    'numeric_value': numericValue,
+    'text_value': textValue,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
   };
 }

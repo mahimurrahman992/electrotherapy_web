@@ -1,14 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_prescription/const/const.dart';
-import 'package:e_prescription/const/web_image.dart';
-import 'package:e_prescription/utils/api.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:e_prescription/controllers/blog_controller/quick_tech_blog_controller.dart';
+import 'package:e_prescription/models/blogs.dart';
+import 'package:e_prescription/screens/blogs/widgets/quick_tech_blog_widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class QuickTechBlogDetails extends StatefulWidget {
   final int id;
-  const QuickTechBlogDetails({required this.id});
+  const QuickTechBlogDetails({super.key, required this.id});
 
   @override
   State<QuickTechBlogDetails> createState() => _QuickTechBlogDetailsState();
@@ -16,309 +14,189 @@ class QuickTechBlogDetails extends StatefulWidget {
 
 class _QuickTechBlogDetailsState extends State<QuickTechBlogDetails> {
   final themeController = locator.get<QuickTechThemeController>();
+  final blogController = locator.get<QuickTechBlogController>();
+
   bool isLoading = true;
-  Map<String, dynamic>? blogData;
+  Blog? blog;
 
   @override
   void initState() {
     super.initState();
-    fetchBlogDetails();
+    loadBlog();
   }
 
-  Future<void> fetchBlogDetails() async {
-    final response = await http.get(
-      Uri.parse('${Api.baseUrl}/api/blog/details/${widget.id}'),
-    );
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      setState(() {
-        blogData = data['blog'];
-        isLoading = false;
-      });
-    } else {
-      setState(() => isLoading = false);
+  Future<void> loadBlog() async {
+    // List theke already data thakle sathe sathe dekhabe
+    final cached =
+        blogController.blogs.firstWhereOrNull((b) => b.id == widget.id);
+    if (cached != null) {
+      blog = cached;
+      isLoading = false;
     }
+
+    final fresh = await blogController.fetchBlogDetails(widget.id);
+    if (!mounted) return;
+    setState(() {
+      blog = fresh ?? blog;
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       final isDay = themeController.isDay.value;
+      final textColor = isDay
+          ? QuickTechAppColors.lightmaintextcolor
+          : QuickTechAppColors.darkmaintextcolor;
+
       return Scaffold(
         backgroundColor:
-            isDay
-                ? const Color(0xFFF4F6FA)
-                : QuickTechAppColors.darkScaffoldColor,
+            isDay ? const Color(0xFFF4F6FA) : QuickTechAppColors.darkScaffoldColor,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor:
-              isDay
-                  ? QuickTechAppColors.lightmaincolor
-                  : QuickTechAppColors.darkmaincolor,
+          backgroundColor: isDay
+              ? QuickTechAppColors.lightmaincolor
+              : QuickTechAppColors.darkmaincolor,
           leading: IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(
-              Icons.arrow_back_ios_new_outlined,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.arrow_back_ios_new_outlined,
+                color: Colors.white),
           ),
-          title: Text(
-            'Blog Details',
-            style: myStyle(18, QuickTechAppColors.white, FontWeight.bold),
-          ),
+          title: Text('Blog Details',
+              style: myStyle(18, QuickTechAppColors.white, FontWeight.bold)),
         ),
-        body:
-            isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : blogData == null
-                ? const Center(child: Text('Blog not found'))
-                : Center(
-                  child: SingleChildScrollView(
+        body: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : blog == null
+                ? Center(
+                    child: Text('Blog not found',
+                        style: TextStyle(color: textColor)))
+                : SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      children: [
-                        // Hero Image — full width, no constraint
-                        Stack(
-                          children: [
-                            SizedBox(
-                              width: double.infinity,
-                              height: 380,
-                              child: CachedNetworkImage(
-                                imageUrl: "${Api.baseUrl}${blogData!['image']}",
-                                fit: BoxFit.cover,
-                                errorWidget:
-                                    (context, url, error) => WebImage(
-                                      imageUrl:
-                                          "${Api.baseUrl}${blogData!['image']}",
-                                      fit: BoxFit.cover,
-                                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 780),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: isDay ? Colors.white : const Color(0xFF1E2230),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black
+                                    .withValues(alpha: isDay ? 0.08 : 0.3),
+                                blurRadius: 24,
+                                offset: const Offset(0, 8),
                               ),
-                              // Image.network(
-                              //   '${Api.baseUrl}${blogData!['image']}',
-                              //   fit: BoxFit.cover,
-                              //   errorBuilder: (context, error, stackTrace) => Container(
-                              //     height: 380,
-                              //     color: Colors.grey[300],
-                              //     child: const Center(child: Icon(Icons.broken_image, size: 48)),
-                              //   ),
-                              // ),
-                            ),
-                            // Gradient overlay at bottom of hero
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              height: 160,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.transparent,
-                                      (isDay
-                                              ? const Color(0xFFF4F6FA)
-                                              : QuickTechAppColors
-                                                  .darkScaffoldColor)
-                                          .withValues(alpha: 0.95),
-                                    ],
-                                  ),
-                                ),
+                            ],
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              QuickTechBlogImage(
+                                url: blogImageUrl(blog!.image),
+                                height: 300,
                               ),
-                            ),
-                          ],
-                        ),
-
-                        // Article Content Card
-                        Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 780),
-                            child: Transform.translate(
-                              offset: const Offset(0, -40),
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                ),
-                                padding: const EdgeInsets.all(36),
-                                decoration: BoxDecoration(
-                                  color:
-                                      isDay
-                                          ? Colors.white
-                                          : const Color(0xFF1E2230),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withValues(
-                                        alpha: isDay ? 0.08 : 0.3,
-                                      ),
-                                      blurRadius: 32,
-                                      offset: const Offset(0, 8),
-                                    ),
-                                  ],
-                                ),
+                              Padding(
+                                padding: const EdgeInsets.all(28),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // Title
                                     Text(
-                                      blogData!['title'] ?? '',
+                                      blog!.title,
                                       style: TextStyle(
                                         fontSize: 28,
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            isDay
-                                                ? QuickTechAppColors
-                                                    .lightmaintextcolor
-                                                : QuickTechAppColors
-                                                    .darkmaintextcolor,
+                                        color: textColor,
                                         height: 1.35,
                                       ),
                                     ),
                                     const SizedBox(height: 16),
-
-                                    // Divider accent
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 40,
-                                          height: 4,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                QuickTechAppColors
-                                                    .lightmaincolor,
-                                            borderRadius: BorderRadius.circular(
-                                              2,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Container(
-                                          width: 12,
-                                          height: 4,
-                                          decoration: BoxDecoration(
-                                            color: QuickTechAppColors
-                                                .lightmaincolor
-                                                .withValues(alpha: 0.4),
-                                            borderRadius: BorderRadius.circular(
-                                              2,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                    Container(
+                                      width: 40,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: QuickTechAppColors.lightmaincolor,
+                                        borderRadius: BorderRadius.circular(2),
+                                      ),
                                     ),
                                     const SizedBox(height: 20),
-
-                                    // Short description
-                                    Container(
-                                      padding: const EdgeInsets.all(16),
-                                      decoration: BoxDecoration(
-                                        color: QuickTechAppColors.lightmaincolor
-                                            .withValues(alpha: 0.07),
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
+                                    if (blog!.shortDescription.isNotEmpty) ...[
+                                      Container(
+                                        width: double.infinity,
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
                                           color: QuickTechAppColors
                                               .lightmaincolor
-                                              .withValues(alpha: 0.2),
+                                              .withValues(alpha: 0.07),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: QuickTechAppColors
+                                                .lightmaincolor
+                                                .withValues(alpha: 0.2),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          blog!.shortDescription,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontStyle: FontStyle.italic,
+                                            color: textColor.withValues(
+                                                alpha: 0.75),
+                                            height: 1.6,
+                                          ),
                                         ),
                                       ),
-                                      child: Text(
-                                        blogData!['short_description'] ?? '',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontStyle: FontStyle.italic,
-                                          color:
-                                              isDay
-                                                  ? QuickTechAppColors
-                                                      .lightmaintextcolor
-                                                      .withValues(alpha: 0.75)
-                                                  : QuickTechAppColors
-                                                      .darkmaintextcolor
-                                                      .withValues(alpha: 0.75),
-                                          height: 1.6,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 28),
-
-                                    // Long description HTML
+                                      const SizedBox(height: 24),
+                                    ],
                                     Html(
-                                      data: blogData!['long_description'] ?? '',
+                                      data: blog!.longDescription,
                                       style: {
-                                        "body": Style(
+                                        'body': Style(
+                                          margin: Margins.zero,
+                                          padding: HtmlPaddings.zero,
                                           fontSize: FontSize(15.5),
                                           lineHeight: const LineHeight(1.75),
-                                          color:
-                                              isDay
-                                                  ? QuickTechAppColors
-                                                      .lightmaintextcolor
-                                                  : QuickTechAppColors
-                                                      .darkmaintextcolor,
+                                          color: textColor,
                                         ),
-                                        "h1": Style(
-                                          fontSize: FontSize(24),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        "h2": Style(
-                                          fontSize: FontSize(20),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        "h3": Style(
-                                          fontSize: FontSize(17),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        "p": Style(
-                                          margin: Margins.only(bottom: 16),
-                                        ),
-                                        "a": Style(
+                                        'p': Style(
+                                            margin: Margins.only(bottom: 16)),
+                                        'a': Style(
                                           color:
                                               QuickTechAppColors.lightmaincolor,
                                           textDecoration: TextDecoration.none,
                                         ),
-                                        "blockquote": Style(
-                                          padding: HtmlPaddings.only(left: 16),
-                                          border: const Border(
-                                            left: BorderSide(
-                                              color: Color(0xFF4CAF50),
-                                              width: 4,
-                                            ),
-                                          ),
-                                          fontStyle: FontStyle.italic,
-                                        ),
                                       },
                                     ),
-                                    const SizedBox(height: 16),
-
-                                    // Footer meta
-                                    const Divider(),
-                                    const SizedBox(height: 12),
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          size: 14,
-                                          color: Colors.grey[500],
-                                        ),
-                                        const SizedBox(width: 6),
-                                        Text(
-                                          blogData!['created_at'] ?? '',
-                                          style: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.grey[500],
+                                    if (blog!.createdAt.trim().isNotEmpty) ...[
+                                      const Divider(height: 32),
+                                      Row(
+                                        children: [
+                                          Icon(Icons.access_time,
+                                              size: 14,
+                                              color: Colors.grey[500]),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            blog!.createdAt,
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.grey[500]),
                                           ),
-                                        ),
-                                      ],
-                                    ),
+                                        ],
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 32),
-                      ],
+                      ),
                     ),
                   ),
-                ),
       );
     });
   }

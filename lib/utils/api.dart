@@ -1,5 +1,5 @@
 class Api {
-  static String baseUrl = 'https://physiotherapy.eclecticdesignsbd.com';
+  static String baseUrl = 'https://app.mostaq.com';
 
   static String register = '$baseUrl/api/register';
   static String login = '$baseUrl/api/login';

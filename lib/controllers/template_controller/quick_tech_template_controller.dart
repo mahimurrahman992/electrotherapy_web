@@ -11,63 +11,8 @@ import 'package:e_prescription/services/template_services/quick_tech_template_st
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-class templetes {
-  String? message;
-  List<Templates>? templates;
-
-  templetes({this.message, this.templates});
-
-  templetes.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
-    if (json['templates'] != null) {
-      templates = <Templates>[];
-      json['templates'].forEach((v) {
-        templates!.add(Templates.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['message'] = message;
-    if (templates != null) {
-      data['templates'] = templates!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Templates {
-  int? id;
-  String? templateValue;
-  String? packageId;
-  String? image;
-  dynamic createdAt;
-  dynamic updatedAt;
-
-  Templates({this.id, this.templateValue, this.packageId, this.image, this.createdAt, this.updatedAt});
-
-  Templates.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    templateValue = json['template_value'];
-    packageId = json['package_id'];
-    image = json['image'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['template_value'] = templateValue;
-    data['package_id'] = packageId;
-    data['image'] = image;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
-  }
-}
+import 'package:e_prescription/models/template_model.dart';
+export 'package:e_prescription/models/template_model.dart';
 
 class QuickTechTemplateController extends GetxController {
   final selectedTemplate = RxInt(-1);
